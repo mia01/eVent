@@ -1,0 +1,8 @@
+FROM mysql:latest
+
+#COPY *.sql /docker-entrypoint-initdb.d/
+
+COPY ./setup.sql /
+COPY ./setup.sh /
+WORKDIR /
+RUN chmod +x ./setup.sh

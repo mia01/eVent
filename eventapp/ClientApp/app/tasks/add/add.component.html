@@ -1,0 +1,36 @@
+<div class="add-task-modal">
+  <form [formGroup]="form" (ngSubmit)="submit(form)">
+    <h1 *ngIf="!task.id" mat-dialog-title>Add New Task</h1>
+    <h1 *ngIf="task.id" mat-dialog-title>Update Task</h1>
+    <mat-dialog-content>
+      <div class="add-task-container">
+        <input type="hidden" formControlName="id">
+        <mat-form-field>
+          <input matInput formControlName="title" placeholder="Task title" required>
+        </mat-form-field>
+        <mat-form-field>
+          <textarea matInput formControlName="description" placeholder="Enter a description for your task"></textarea>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" formControlName="dueDate" placeholder="Choose a date" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Priority</mat-label>
+          <mat-select formControlName="priorityId" required>
+            <mat-option *ngFor="let priority of priorities" [value]="priority.id">
+              <span class="task-priority" [ngStyle]="{'background': priority.colour }"></span>
+              {{ priority.title }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button color="warn" type="button" mat-dialog-close>Cancel</button>
+      <button *ngIf="!task.id" mat-button color="primary" type="submit" [disabled]="form.invalid">Add</button>
+      <button *ngIf="task.id" mat-button color="primary" type="submit" [disabled]="form.invalid">Update</button>
+    </mat-dialog-actions>
+  </form>
+</div>

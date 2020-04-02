@@ -1,0 +1,16 @@
+<div class="login-container">
+    <mat-card class="login-card">
+        <mat-card-title class="login-title">
+            <h1>eVent</h1>
+        </mat-card-title>
+        <mat-form-field>
+            <input matInput placeholder="Enter your email" [formControl]="email" required>
+            <mat-error *ngIf="email.invalid"></mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Enter your password" [formControl]="password" required>
+            <mat-error *ngIf="password.invalid"></mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary">Login</button>
+    </mat-card>
+</div>

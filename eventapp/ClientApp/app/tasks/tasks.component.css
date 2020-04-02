@@ -1,0 +1,28 @@
+.tasks-container {
+    padding: 15px;
+    width: 90%;
+    margin: auto;
+}
+
+.task-actions {
+    padding: 10px;
+    text-align: right;
+}
+
+.task-icon {
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.task-item {
+    width: 100%;
+}
+
+.done {
+    color: #8e8e8e;
+}
+
+.done-checkbox {
+    right: 5px;
+    position: absolute;
+}

@@ -1,0 +1,28 @@
+<div class="task-actions">
+  <button mat-fab color="primary" (click)="openAddTaskModal()">Add</button>
+</div>
+<div class="tasks-container">
+  <mat-list role="list" #taskList>
+    <mat-list-item role="listitem" *ngFor="let task of tasks">
+        <div [class.done]="task.done" class="task-item">
+          <span  (click)="openAddTaskModal(task)">
+            <mat-icon class="task-icon">create</mat-icon>
+          </span>
+
+          <span class="task-description">
+            <del *ngIf="task.done;else taskDescription">
+              {{ task.title }}
+            </del>
+
+            <ng-template #taskDescription>{{ task.title }}</ng-template>
+          </span>
+
+          <span class="done-checkbox">
+            <mat-checkbox [checked]="task.done" (change)="updateTaskDoneStatus($event, task)">
+            </mat-checkbox>
+          </span>
+        </div>
+    </mat-list-item>
+  </mat-list>
+</div>
+

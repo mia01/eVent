@@ -1,0 +1,19 @@
+.add-task-modal {
+    width: 500px;
+}
+
+.add-task-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-task-container > * {
+    width: 100%;
+}
+
+.task-priority {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 50%;
+}
