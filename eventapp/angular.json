@@ -24,7 +24,7 @@
               "ClientApp/assets"
             ],
             "styles": [
-              "ClientApp/styles.css"
+              "ClientApp/styles.scss"
             ],
             "scripts": []
           },
@@ -130,5 +130,10 @@
       }
     }
   },
-  "defaultProject": "ClientApp"
+  "defaultProject": "ClientApp",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }

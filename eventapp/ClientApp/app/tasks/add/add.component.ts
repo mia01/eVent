@@ -8,7 +8,7 @@ import IAddTaskForm from 'ClientApp/app/interfaces/addTaskForm';
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
-  styleUrls: ['./add.component.css']
+  styleUrls: ['./add.component.scss']
 })
 export class AddTaskComponent implements OnInit {
 
