@@ -12,10 +12,29 @@
 .task-icon {
     margin-right: 5px;
     cursor: pointer;
+    vertical-align: bottom;
+}
+
+.task-list-item {
+    .high-priority {
+        border-left: 3px solid red;
+        background-color: #fbc0c0;
+    }
+    .low-priority {
+        border-left: 3px solid green;
+        background-color: #cffbc0;
+    }
+    .medium-priority {
+        border-left: 3px solid orange;
+        background-color: #f9efc0;
+    }
 }
 
 .task-item {
     width: 100%;
+    position: relative;
+    padding: 10px;
+    margin: 10px;
 }
 
 .done {
@@ -23,6 +42,6 @@
 }
 
 .done-checkbox {
-    right: 5px;
+    right: 10px;
     position: absolute;
 }
