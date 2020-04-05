@@ -52,9 +52,10 @@ namespace eventapp.Controllers
                 task.PriorityId = Priority.DefaultPriorityId;
             }
 
-            int rowsAffected = _taskRepository.Add(task);
-            if (rowsAffected > 0)
+            long taskId = _taskRepository.Add(task);
+            if (taskId != 0)
             {
+                task.Id = taskId;
                 return Ok(task);
             }
 

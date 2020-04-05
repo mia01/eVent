@@ -39,7 +39,7 @@ namespace eventapp.Repositories
             }
         }
 
-        public T GetById(int id)
+        public T GetById(long id)
         {
             using (MySqlConnection dbConnection = Connection)
             {
@@ -49,7 +49,7 @@ namespace eventapp.Repositories
             }
         }
 
-        public void Delete(int id)
+        public void Delete(long id)
         {
             using (MySqlConnection dbConnection = Connection)
             {
@@ -58,7 +58,7 @@ namespace eventapp.Repositories
                 dbConnection.Execute(sQuery, new { Id = id });
             }
         }
-        public int Add(T item)
+        public long Add(T item)
         {
             var type = item.GetType();
             var properties = type.GetProperties();
@@ -77,9 +77,9 @@ namespace eventapp.Repositories
 
             using (IDbConnection dbConnection = Connection)
             {
-                string sQuery = $"INSERT INTO {Table} ({names}) VALUES (@{values})";
+                string sQuery = $"INSERT INTO {Table} ({names}) VALUES (@{values}); SELECT LAST_INSERT_ID();";
                 dbConnection.Open();
-                return dbConnection.Execute(sQuery, item);
+                return dbConnection.ExecuteScalar<long>(sQuery, item);
             }
         }
 
