@@ -1,8 +1,100 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~font-awesome/css/font-awesome.css";
+@import '~@fullcalendar/core/main.css';
+@import '~@fullcalendar/daygrid/main.css';
 
 body {
     height: 100vh;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+// full calender overrides
+.full-calender-event-task {
+    background-color: grey;
+    border-radius: 0px; 
+    border: 0px;
+    color: #1f1e1ede;
+}
+
+.full-calender-event-task:hover {
+    color: black;
+}
+
+.high-priority {
+    border-left: 3px solid red;
+    background-color: #fbc0c0;
+}
+.low-priority {
+    border-left: 3px solid green;
+    background-color: #cffbc0;
+}
+.medium-priority {
+    border-left: 3px solid orange;
+    background-color: #f9efc0;
+}
+
+.fc-unthemed td.fc-today {
+    background: #f4f5f8;
+}
+
+.fc-view .fc-day-number {
+    padding: 8px 10px;
+    min-width: 20px;
+    text-align: center;
+    margin: 2px 2px 0 0;
+}
+
+.fc-view .fc-day-number:hover {
+    color: #1c273c;
+    background-color: #f1f1f3;
+}
+
+td.fc-today .fc-day-number,
+td.fc-today .fc-day-number:hover {
+    background-color: #5b47fb;
+    color: #fff;
+}
+
+.fc-view .fc-other-month.fc-past {
+    background-color: #f4f5f8; 
+}
+
+.fc-header-toolbar button {
+    height: 38px;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #cdd4e0;
+    box-shadow: none;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    color: #1c273c;
+    font-size: 13px;
+    text-transform: capitalize;
+    outline: none;
+    text-shadow: none;
+    border-radius: 0;
+}
+
+.fc-header-toolbar button.fc-today-button {
+    color: #fff;
+    background-color: #3366ff;
+    border-color: #1a53ff;
+    float: right;
+}
+
+.fc-header-toolbar button.fc-today-button.fc-state-disabled {
+    border-color: #cdd4e0;
+    background-color: #f4f5f8;
+    color: #97a3b9;
+    cursor: default;
+}
+
+.fc-header-toolbar button:hover, 
+.fc-header-toolbar button:focus
+.fc-header-toolbar button:active {
+    background-color: #e3e7ed;
+    border: 0px;
 }
