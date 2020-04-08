@@ -22,6 +22,8 @@ import { MatListModule } from '@angular/material/list';
 import { HttpClientModule } from '@angular/common/http';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { AddTaskComponent } from './tasks/add/add.component';
+import { CalenderComponent } from './calender/calender.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 export const sharedModules = [
     BrowserModule,
@@ -44,6 +46,7 @@ export const sharedModules = [
     MatNativeDateModule,
     MatCheckboxModule,
     MatSelectModule,
+    FullCalendarModule,
 ];
 
 export const sharedComponents = [
@@ -52,4 +55,5 @@ export const sharedComponents = [
     TasksComponent,
     SideNavComponent,
     AddTaskComponent,
+    CalenderComponent,
 ];

@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
+import { CalenderComponent } from './calender/calender.component';
 
 
 const appRoutes: Routes = [
@@ -13,6 +14,7 @@ const appRoutes: Routes = [
         component: SideNavComponent,
         children: [
             { path: 'tasks', pathMatch: 'full', component: TasksComponent },
+            { path: 'calender', pathMatch: 'full', component: CalenderComponent },
         ]
     }
 ];

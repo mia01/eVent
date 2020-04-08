@@ -1,0 +1,7 @@
+<div class="full-calender-container">
+    <full-calendar 
+    defaultView="dayGridMonth" 
+    [plugins]="calendarPlugins"
+    [eventSources]="eventSources"
+    (eventRender)="eventRender($event)"></full-calendar>
+</div>
