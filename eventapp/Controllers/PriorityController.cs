@@ -2,11 +2,13 @@
 using System.Linq;
 using eventapp.Models;
 using eventapp.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eventapp.Controllers
 {
+    [Authorize]
     [Route("api/priorities")]
     [EnableCors("CorsPolicy")]
     [ApiController]

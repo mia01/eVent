@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using eventapp.Models;
+﻿using eventapp.Models;
 using eventapp.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 using Task = eventapp.Models.Task;
 
 namespace eventapp.Controllers
 {
+    [Authorize]
     [Route("api/tasks")]
     [EnableCors("CorsPolicy")]
     [ApiController]

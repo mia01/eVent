@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace eventapp
 {
@@ -46,6 +49,26 @@ namespace eventapp
                 configuration.RootPath = "wwwroot/clientapp/dist";
             });
 
+            var jwtConfig = Configuration.GetSection("Jwt");
+            // configure JWT authentication 
+            services.AddAuthentication(opt => {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    ValidIssuer = jwtConfig.GetValue("ValidIssuer", "localhost"),
+                    ValidAudience = jwtConfig.GetValue("ValidAudience", "localhost"),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.GetValue("IssuerSigningKey", "key")))
+                };
+            });
 
         }
 
@@ -71,6 +94,8 @@ namespace eventapp
             app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
