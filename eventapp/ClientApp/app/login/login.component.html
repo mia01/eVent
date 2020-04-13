@@ -1,16 +1,17 @@
-<div class="login-container">
+<form class="login-container" [formGroup]="loginForm" (ngSubmit)="login(loginForm)">
     <mat-card class="login-card">
         <mat-card-title class="login-title">
             <h1>eVent</h1>
         </mat-card-title>
         <mat-form-field>
-            <input matInput placeholder="Enter your email" [formControl]="email" required>
-            <mat-error *ngIf="email.invalid"></mat-error>
+            <input matInput placeholder="Enter your Username" [formControl]="username" required>
+            <mat-error *ngIf="username.invalid"></mat-error>
         </mat-form-field>
         <mat-form-field>
             <input matInput placeholder="Enter your password" [formControl]="password" required>
             <mat-error *ngIf="password.invalid"></mat-error>
         </mat-form-field>
         <button mat-raised-button color="primary">Login</button>
+        <div class="login-error" *ngIf="invalidLogin">Oh no! looks like an incorrect username or password. Try again.</div>
     </mat-card>
-</div>
+</form>
