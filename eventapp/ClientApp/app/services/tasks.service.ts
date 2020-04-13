@@ -17,7 +17,6 @@ export class TasksService {
     private httpClient: HttpClient
   ) { }
 
-
   public getAllTasks(): Promise<Task[]> {
     return this.httpClient.get<Task[]>(this.TASK_URL).toPromise();
   }
