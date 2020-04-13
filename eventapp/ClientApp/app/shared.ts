@@ -24,6 +24,8 @@ import { SideNavComponent } from './side-nav/side-nav.component';
 import { AddTaskComponent } from './tasks/add/add.component';
 import { CalenderComponent } from './calender/calender.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { JwtModule } from "@auth0/angular-jwt";
+import { getJwtToken } from './models/auth/auth.utils';
 
 export const sharedModules = [
     BrowserModule,
@@ -47,6 +49,13 @@ export const sharedModules = [
     MatCheckboxModule,
     MatSelectModule,
     FullCalendarModule,
+    JwtModule.forRoot({
+        config: {
+          tokenGetter: getJwtToken,
+          whitelistedDomains: ["localhost:5000"],
+          blacklistedRoutes: []
+        }
+      }),
 ];
 
 export const sharedComponents = [
@@ -57,3 +66,4 @@ export const sharedComponents = [
     AddTaskComponent,
     CalenderComponent,
 ];
+  
