@@ -4,6 +4,13 @@ CREATE DATABASE IF NOT EXISTS `eventapp` /*!40100 DEFAULT CHARACTER SET utf8mb4 
 CREATE USER IF NOT EXISTS 'eventapp'@'%' IDENTIFIED BY 'eventapp';
 GRANT ALL PRIVILEGES ON * . * TO 'eventapp'@'%';
 
+-- Create EF migrations table
+CREATE TABLE IF NOT EXISTS `eventapp`.`__EFMigrationsHistory` (
+    `MigrationId` NVARCHAR (150) NOT NULL,
+    `ProductVersion` NVARCHAR (32) NOT NULL,
+    PRIMARY KEY (`MigrationId`)
+);
+
 -- Create priority table
 CREATE TABLE IF NOT EXISTS `eventapp`.`Priority` (
   `Id` INT NOT NULL AUTO_INCREMENT,

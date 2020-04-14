@@ -28,7 +28,13 @@ namespace eventapp.Repositories
             return $@"server={_databaseConfig.Server};port={_databaseConfig.Port};database={_databaseConfig.Name};uid={_databaseConfig.User};pwd={_databaseConfig.Password};";
         }
 
-        protected MySqlConnection Connection => new MySqlConnection(_connectionString);
+        protected MySqlConnection Connection
+        {
+            get
+            {
+                return new MySqlConnection(_connectionString);
+            }
+        }
 
         public IEnumerable<T> GetAll()
         {
@@ -41,7 +47,7 @@ namespace eventapp.Repositories
 
         public T GetById(long id)
         {
-            using (MySqlConnection dbConnection = Connection)
+            using (var dbConnection = Connection)
             {
                 string sQuery = $"SELECT * FROM {Table} WHERE {PrimaryKey} = @Id";
                 dbConnection.Open();
