@@ -1,14 +1,18 @@
 ﻿using eventapp.Areas.Identity.Data;
+using IdentityServer4.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace eventapp.Models
 {
-    public class EventAppContext : IdentityDbContext<EventAppUser>
+    public class EventAppContext : ApiAuthorizationDbContext<EventAppUser>
     {
-        public EventAppContext(DbContextOptions<EventAppContext> options)
-            : base(options)
+        public EventAppContext(DbContextOptions<EventAppContext> options,
+            IOptions<OperationalStoreOptions> operationalStoreOptions)
+            : base(options, operationalStoreOptions)
         {
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using eventapp.Areas.Identity.Data;
 using eventapp.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -29,10 +30,15 @@ namespace eventapp.Areas.Identity
                     options.Password.RequireUppercase = true;
                     options.Password.RequiredLength = 6;
                     options.Password.RequiredUniqueChars = 1;
-                    options.SignIn.RequireConfirmedPhoneNumber = true;
+                    //options.SignIn.RequireConfirmedPhoneNumber = true;
                     options.User.RequireUniqueEmail = true;
-                })
-                    .AddEntityFrameworkStores<EventAppContext>();
+                }).AddEntityFrameworkStores<EventAppContext>();
+
+                services.AddIdentityServer()
+                .AddApiAuthorization<EventAppUser, EventAppContext>();
+
+                services.AddAuthentication()
+                .AddIdentityServerJwt();
             });
         }
     }

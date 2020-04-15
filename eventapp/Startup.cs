@@ -10,6 +10,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Twilio;
+using Microsoft.AspNetCore.Authentication;
 
 namespace eventapp
 {
@@ -38,7 +40,10 @@ namespace eventapp
                         .AllowAnyMethod()
                         .AllowAnyHeader());
             });
-            services.AddMvc();
+
+            services.AddControllersWithViews();
+            services.AddRazorPages();
+            //services.AddMvc();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
@@ -50,26 +55,33 @@ namespace eventapp
             });
 
             var jwtConfig = Configuration.GetSection("Jwt");
-            // configure JWT authentication 
-            services.AddAuthentication(opt => {
-                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
 
-                    ValidIssuer = jwtConfig.GetValue("ValidIssuer", "localhost"),
-                    ValidAudience = jwtConfig.GetValue("ValidAudience", "localhost"),
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.GetValue("IssuerSigningKey", "key")))
-                };
-            });
+            //services.AddAuthentication().AddIdentityServerJwt();
+            //configure JWT authentication
+            //services.AddAuthentication(opt =>
+            //{
+            //    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //})
+            //.AddJwtBearer(options =>
+            //{
+            //    options.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateIssuer = true,
+            //        ValidateAudience = true,
+            //        ValidateLifetime = true,
+            //        ValidateIssuerSigningKey = true,
 
+            //        ValidIssuer = jwtConfig.GetValue("ValidIssuer", "localhost"),
+            //        ValidAudience = jwtConfig.GetValue("ValidAudience", "localhost"),
+            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.GetValue("IssuerSigningKey", "key")))
+            //    };
+            //});
+
+            var accountSid = Configuration["Twilio:AccountSID"];
+            var authToken = Configuration["Twilio:AuthToken"];
+            TwilioClient.Init(accountSid, authToken);
+            services.Configure<TwilioVerifySettings>(Configuration.GetSection("Twilio"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -95,6 +107,7 @@ namespace eventapp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
+            app.UseIdentityServer();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
