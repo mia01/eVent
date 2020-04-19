@@ -35,8 +35,11 @@ To test swagger
 2. add "/swagger" to url and should take to you swagger api tester
 
 --------------------------------
-Angular Karma Testing
+Angular
 --------------------------------
+To run over ssl
+ng serve --ssl true
+
 To test angular using karma
 1. run "ng test" in a terminal where the angular.json file is located
 

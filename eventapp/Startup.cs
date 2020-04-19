@@ -2,16 +2,12 @@
 using eventapp.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Twilio;
-using Microsoft.AspNetCore.Authentication;
 
 namespace eventapp
 {
@@ -56,28 +52,6 @@ namespace eventapp
 
             var jwtConfig = Configuration.GetSection("Jwt");
 
-            //services.AddAuthentication().AddIdentityServerJwt();
-            //configure JWT authentication
-            //services.AddAuthentication(opt =>
-            //{
-            //    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //.AddJwtBearer(options =>
-            //{
-            //    options.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuer = true,
-            //        ValidateAudience = true,
-            //        ValidateLifetime = true,
-            //        ValidateIssuerSigningKey = true,
-
-            //        ValidIssuer = jwtConfig.GetValue("ValidIssuer", "localhost"),
-            //        ValidAudience = jwtConfig.GetValue("ValidAudience", "localhost"),
-            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.GetValue("IssuerSigningKey", "key")))
-            //    };
-            //});
-
             var accountSid = Configuration["Twilio:AccountSID"];
             var authToken = Configuration["Twilio:AuthToken"];
             TwilioClient.Init(accountSid, authToken);
@@ -102,20 +76,24 @@ namespace eventapp
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            app.UseRouting();
             app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            //if (!env.IsDevelopment())
+            //{
+                app.UseSpaStaticFiles();
+            //}
+            app.UseRouting();
             app.UseAuthentication();
             app.UseIdentityServer();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                //endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
-                endpoints.MapControllers();
-                //endpoints.MapControllerRoute(
-                //    name: "default",
-                //    pattern: "{controller}/{action=Index}/{id?}");
             });
             app.UseSpa(spa =>
             {

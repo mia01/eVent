@@ -5,14 +5,24 @@ import { TasksComponent } from './tasks/tasks.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { CalenderComponent } from './calender/calender.component';
 import { AuthGuard } from './services/auth/authGuard.service';
+import { ApplicationPaths } from './models/auth/auth.constants';
+import { LogoutComponent } from './logout/logout.component';
 
 
 const appRoutes: Routes = [
-    { path: 'login', component: LoginComponent },
-    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    { path: '', redirectTo: 'app', pathMatch: 'full', canActivate: [AuthGuard]},
+    { path: ApplicationPaths.Login, component: LoginComponent },
+    { path: ApplicationPaths.LoginFailed, component: LoginComponent },
+    { path: ApplicationPaths.LoginCallback, component: LoginComponent },
+    { path: ApplicationPaths.Register, component: LoginComponent },
+    { path: ApplicationPaths.Profile, component: LoginComponent },
+    { path: ApplicationPaths.LogOut, component: LogoutComponent },
+    { path: ApplicationPaths.LoggedOut, component: LogoutComponent },
+    { path: ApplicationPaths.LogOutCallback, component: LogoutComponent },
     {
         path: 'app',
         component: SideNavComponent,
+        canActivate: [AuthGuard],
         children: [
             { path: 'tasks', pathMatch: 'full', component: TasksComponent, canActivate: [AuthGuard] },
             { path: 'calender', pathMatch: 'full', component: CalenderComponent, canActivate: [AuthGuard] },

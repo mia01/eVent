@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   api: {
-    base: 'http://localhost:5000/api',
+    base: 'https://localhost:44363/api',
     login: '/auth/login',
     tasks: '/tasks',
     priorities: '/priorities'

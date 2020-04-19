@@ -1,24 +1,27 @@
-import { CanActivate, Router } from '@angular/router';
-import { getJwtToken } from 'ClientApp/app/models/auth/auth.utils';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { JwtHelperService  } from "@auth0/angular-jwt";
-import { LoginService } from './login.service';
+import { Observable } from 'rxjs';
+import { AuthorizeService } from './authorize.service';
+import { tap } from 'rxjs/operators';
+import { ApplicationPaths } from 'ClientApp/app/models/auth/auth.constants';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class AuthGuard implements CanActivate {
-    constructor(
-        private loginService: LoginService,
-        private router: Router) {}
-    
-    canActivate(): boolean {
-        if (this.loginService.isUserAuthenticated()) {
-            return true;
-        }
-
-        this.router.navigateByUrl("/login");
-        return false;
+    constructor(private authorize: AuthorizeService, private router: Router) {
     }
-}
+    canActivate(
+      _next: ActivatedRouteSnapshot,
+      state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+        return this.authorize.isAuthenticated()
+          .pipe(tap(isAuthenticated => this.handleAuthorization(isAuthenticated, state)));
+    }
+  
+    private handleAuthorization(isAuthenticated: boolean, state: RouterStateSnapshot) {
+      if (!isAuthenticated) {
+        this.router.navigateByUrl(ApplicationPaths.Login);
+      }
+    }
+  }

@@ -64,7 +64,7 @@ namespace eventapp.Controllers
 
         // POST api/tasks/5
         [HttpPost("{id}")]
-        public IActionResult Update(int id, [FromBody] Task task)
+        public IActionResult Update(long id, [FromBody] Task task)
         {
             if (task == null)
             {
@@ -80,10 +80,17 @@ namespace eventapp.Controllers
             return StatusCode(500);
         }
 
-        // DELETE api/values/5
+        // DELETE api/tasks/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(long id)
         {
+            int rowsAffected = _taskRepository.Delete(id);
+            if (rowsAffected > 0)
+            {
+                return Ok();
+            }
+
+            return StatusCode(500);
         }
     }
 }

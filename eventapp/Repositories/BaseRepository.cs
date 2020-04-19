@@ -55,13 +55,13 @@ namespace eventapp.Repositories
             }
         }
 
-        public void Delete(long id)
+        public int Delete(long id)
         {
             using (MySqlConnection dbConnection = Connection)
             {
                 string sQuery = $"DELETE FROM {Table} WHERE {PrimaryKey} = @Id";
                 dbConnection.Open();
-                dbConnection.Execute(sQuery, new { Id = id });
+                return dbConnection.Execute(sQuery, new { Id = id });
             }
         }
         public long Add(T item)

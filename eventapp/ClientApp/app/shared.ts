@@ -26,6 +26,7 @@ import { CalenderComponent } from './calender/calender.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { JwtModule } from "@auth0/angular-jwt";
 import { getJwtToken } from './models/auth/auth.utils';
+import { LogoutComponent } from './logout/logout.component';
 
 export const sharedModules = [
     BrowserModule,
@@ -60,6 +61,7 @@ export const sharedModules = [
 
 export const sharedComponents = [
     LoginComponent,
+    LogoutComponent,
     AppComponent,
     TasksComponent,
     SideNavComponent,
