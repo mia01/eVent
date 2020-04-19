@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import { LoginService } from '../services/auth/login.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -22,12 +20,5 @@ export class SideNavComponent {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private loginService: LoginService,
-    private router: Router
     ) { }
-
-    public logout(): void {
-      this.loginService.logout();
-      this.router.navigateByUrl("/login");
-    }
 }
