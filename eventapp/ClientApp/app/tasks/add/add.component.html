@@ -12,10 +12,11 @@
           <textarea matInput formControlName="description" placeholder="Enter a description for your task"></textarea>
         </mat-form-field>
         <mat-form-field>
-          <input matInput [matDatepicker]="picker" formControlName="dueDate" placeholder="Choose a date" required>
+          <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date and time" formControlName="dueDate">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+          <ngx-mat-datetime-picker #picker [showSpinners]="true" [stepHour]="1" [stepMinute]="1" [stepSecond]="1">
+          </ngx-mat-datetime-picker>
+       </mat-form-field>
         <mat-form-field>
           <mat-label>Priority</mat-label>
           <mat-select formControlName="priorityId" required>
@@ -25,6 +26,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <mat-checkbox formControlName="reminder">Remind me 1hr before due date</mat-checkbox>
       </div>
     </mat-dialog-content>
     <mat-dialog-actions>

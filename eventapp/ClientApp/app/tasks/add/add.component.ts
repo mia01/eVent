@@ -32,6 +32,7 @@ export class AddTaskComponent implements OnInit {
       description: this.task ? this.task.description : "",
       dueDate: [this.task ? this.task.dueDate : "", Validators.required],
       priorityId: [this.task ? this.task.priorityId : "", Validators.required],
+      reminder: [this.task ? this.task.reminder : false],
     })
   }
 

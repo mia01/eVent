@@ -1,10 +1,8 @@
-﻿using System;
-using eventapp.Areas.Identity.Data;
+﻿using eventapp.Areas.Identity.Data;
 using eventapp.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +37,7 @@ namespace eventapp.Areas.Identity
 
                 services.AddAuthentication()
                 .AddIdentityServerJwt();
+                services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             });
         }
     }

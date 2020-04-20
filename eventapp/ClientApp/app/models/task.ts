@@ -7,4 +7,5 @@ export default class Task {
     dueDate: Date;
     createdAt: Date;
     updatedAt: Date;
+    reminder: boolean;
 }

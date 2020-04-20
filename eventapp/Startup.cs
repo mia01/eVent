@@ -2,7 +2,6 @@
 using eventapp.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -39,7 +38,6 @@ namespace eventapp
 
             services.AddControllersWithViews();
             services.AddRazorPages();
-            //services.AddMvc();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
@@ -79,10 +77,10 @@ namespace eventapp
             app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            //if (!env.IsDevelopment())
-            //{
+            if (!env.IsDevelopment())
+            {
                 app.UseSpaStaticFiles();
-            //}
+            }
             app.UseRouting();
             app.UseAuthentication();
             app.UseIdentityServer();
@@ -104,7 +102,8 @@ namespace eventapp
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseAngularCliServer(npmScript: "start");
+                    //spa.UseAngularCliServer(npmScript: "start");
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
             });
 

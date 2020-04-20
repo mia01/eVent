@@ -14,5 +14,9 @@ namespace eventapp.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public DateTime DueDate { get; set; }
+        public string CreatedBy { get; set; }
+        public string AssignedTo { get; set; }
+        public bool Reminder { get; set; }
+
     }
 }

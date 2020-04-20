@@ -14,7 +14,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { TasksComponent } from './tasks/tasks.component';
@@ -24,9 +24,8 @@ import { SideNavComponent } from './side-nav/side-nav.component';
 import { AddTaskComponent } from './tasks/add/add.component';
 import { CalenderComponent } from './calender/calender.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { JwtModule } from "@auth0/angular-jwt";
-import { getJwtToken } from './models/auth/auth.utils';
 import { LogoutComponent } from './logout/logout.component';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 
 export const sharedModules = [
     BrowserModule,
@@ -50,13 +49,12 @@ export const sharedModules = [
     MatCheckboxModule,
     MatSelectModule,
     FullCalendarModule,
-    JwtModule.forRoot({
-        config: {
-          tokenGetter: getJwtToken,
-          whitelistedDomains: ["localhost:5000"],
-          blacklistedRoutes: []
-        }
-      }),
+    NgxMatTimepickerModule,
+    NgxMatDatetimePickerModule,
+    NgxMatNativeDateModule,
+    FormsModule,
+    MatDatepickerModule,
+    ReactiveFormsModule,
 ];
 
 export const sharedComponents = [
