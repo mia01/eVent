@@ -1,10 +1,8 @@
-﻿using eventapp.Areas.Identity.Data;
-using eventapp.Models;
+﻿using eventapp.Models;
 using eventapp.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,14 +18,11 @@ namespace eventapp.Controllers
     public class TaskController : ControllerBase
     {
         private readonly TaskRepository _taskRepository;
-        private readonly UserManager<EventAppUser> _userManager;
         private readonly IHttpContextAccessor _contextAccessor;
 
-
-        public TaskController(TaskRepository taskRepository, UserManager<EventAppUser> userManager, IHttpContextAccessor httpContextAccessor)
+        public TaskController(TaskRepository taskRepository, IHttpContextAccessor httpContextAccessor)
         {
             _taskRepository = taskRepository;
-            _userManager = userManager;
             _contextAccessor = httpContextAccessor;
         }
 
