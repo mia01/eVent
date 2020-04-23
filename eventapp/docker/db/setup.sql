@@ -27,12 +27,13 @@ CREATE TABLE IF NOT EXISTS `eventapp`.`Tasks` (
   `Description` TEXT NULL,
   `Done` TINYINT NOT NULL,
   `PriorityId` INT DEFAULT NULL,
-  `CreatedAt` DATE NOT NULL,
-  `UpdatedAt` DATE NULL,
-  `DueDate` DATE NULL,
+  `CreatedAt` DATETIME NOT NULL,
+  `UpdatedAt` DATETIME NULL,
+  `DueDate` DATETIME NULL,
   `CreatedBy`  VARCHAR(255) NULL,
   `AssignedTo` VARCHAR(255) NULL,
   `Reminder` TINYINT NOT NULL,
+  `ReminderSent` TINYINT NOT NULL DEFAULT 0,
   FOREIGN KEY (PriorityId)
   REFERENCES Priority(Id),
   PRIMARY KEY (`Id`))

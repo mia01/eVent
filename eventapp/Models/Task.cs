@@ -17,6 +17,7 @@ namespace eventapp.Models
         public string CreatedBy { get; set; }
         public string AssignedTo { get; set; }
         public bool Reminder { get; set; }
+        public bool ReminderSent { get; set; }
 
     }
 }

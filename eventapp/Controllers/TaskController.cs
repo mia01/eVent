@@ -87,7 +87,8 @@ namespace eventapp.Controllers
             {
                 return BadRequest();
             }
-
+            task.CreatedBy = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+            task.AssignedTo = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
             int rowsAffected = _taskRepository.Update(task);
             if (rowsAffected > 0)
             {
