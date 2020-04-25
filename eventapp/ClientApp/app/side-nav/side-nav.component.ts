@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AuthorizeService } from '../services/auth/authorize.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -11,8 +12,7 @@ import { map } from 'rxjs/operators';
 
 export class SideNavComponent {
 
-  isUserLoggedIn: boolean;
-  userId: string;
+  username: string;
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches)
@@ -20,5 +20,13 @@ export class SideNavComponent {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    ) { }
+    private authservice: AuthorizeService
+    ) { 
+    }
+
+    async ngOnInit(): Promise<void> {
+      this.authservice.getUser().subscribe(u => {
+        this.username = u.name;
+      });
+    }
 }

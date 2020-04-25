@@ -1,16 +1,18 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
-    <mat-toolbar>
-      <h1>eVent</h1>
-    </mat-toolbar>
-    <mat-nav-list>
-      <a mat-list-item [routerLink]="['tasks']" routerLinkActive="active">Tasks</a>
-      <a mat-list-item [routerLink]="['calender']" routerLinkActive="active">Calender</a>
-      <a mat-list-item [routerLink]="['/authentication/logout']" routerLinkActive="active">Log Out</a>
-    </mat-nav-list>
+  [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
+  <mat-toolbar>
+    <h1>eVent</h1>
+  </mat-toolbar>
+  <mat-nav-list>
+    <a mat-list-item href="/Identity/Account/Manage" routerLinkActive="active">My Profile</a>
+    <a mat-list-item [routerLink]="['tasks']" routerLinkActive="active">My Tasks</a>
+    <a mat-list-item [routerLink]="['calender']" routerLinkActive="active">My Calender</a>
+    <a mat-list-item [routerLink]="['friends']" routerLinkActive="active">My Friends</a>
+    <a mat-list-item [routerLink]="['/authentication/logout']" routerLinkActive="active">Log Out</a>
+  </mat-nav-list>
   </mat-sidenav>
-
+  
   <mat-sidenav-content>
     <mat-toolbar color="primary">
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
@@ -19,6 +21,10 @@
         </mat-icon>
       </button>
     </mat-toolbar>
-    <router-outlet></router-outlet>
+    <router-outlet>
+      <div class="user-welcome-bar">
+        <div> Welcome {{username}}!</div>
+      </div>
+    </router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
