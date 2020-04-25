@@ -7,6 +7,8 @@ import { AddTaskComponent } from './add/add.component';
 import { PriorityService } from '../services/priority.service';
 import Priority from '../models/priority';
 import IAddTaskForm from '../interfaces/addTaskForm';
+import { FriendsService } from '../services/friends.service';
+import UserFriendResponse from '../models/UserFriendResponse';
 
 @Component({
   selector: 'app-tasks',
@@ -18,9 +20,11 @@ export class TasksComponent implements OnInit {
   addTaskModal: MatDialogRef<AddTaskComponent>;
   public tasks: Task[] = [];
   public priorities: Priority[] = [];
+  public friends: UserFriendResponse[] = [];
 
   constructor(
     private taskService: TasksService,
+    private friendService: FriendsService,
     private priorityService: PriorityService,
     private modal: MatDialog
   ) { }
@@ -28,6 +32,7 @@ export class TasksComponent implements OnInit {
   async ngOnInit() {
     this.priorities = await this.priorityService.getAllPriorities();
     this.tasks = await this.taskService.getAllTasks();
+    this.friends = await this.friendService.getUserFriends();
   }
 
   updateTaskDoneStatus(event: MatCheckboxChange, task: Task) {
@@ -37,15 +42,23 @@ export class TasksComponent implements OnInit {
 
   async openAddTaskModal(task?: Task) {
     let priorities = this.priorities;
+    let friends = this.friends;
     let taskData = task || {};
     this.addTaskModal = this.modal.open(AddTaskComponent, {
-      data: { taskData, priorities } as IAddTaskForm,
+      data: { taskData, priorities, friends } as IAddTaskForm,
       disableClose: true,
       autoFocus : true
     });
 
     let formData = await this.addTaskModal.afterClosed().toPromise();
     await this.createOrUpdateTask(formData, task);
+  }
+
+  async deleteTask(task: Task) {
+    var response = await this.taskService.deleteTask(task);
+    console.log(response);
+    let taskIndex = this.tasks.indexOf(task);
+    this.tasks.splice(taskIndex, 1);
   }
 
   private async createOrUpdateTask(taskData: any, task?: Task) {

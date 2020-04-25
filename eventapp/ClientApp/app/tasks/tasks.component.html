@@ -6,21 +6,26 @@
     <div role="listitem" class="task-list-item" *ngFor="let task of tasks">
       <div [class.done]="task.done" class="task-item"
         [ngClass]="{ 'low-priority': (task.priorityId == 1), 'medium-priority': (task.priorityId == 2), 'high-priority': (task.priorityId == 3) }">
-        <span (click)="openAddTaskModal(task)">
-          <mat-icon class="task-icon">create</mat-icon>
+        
+        <span class="done-checkbox">
+          <mat-checkbox [checked]="task.done" (change)="updateTaskDoneStatus($event, task)">
+          </mat-checkbox>
         </span>
-
         <span class="task-description">
           <del *ngIf="task.done;else taskDescription">
             {{ task.title }}
           </del>
-
+          
           <ng-template #taskDescription>{{ task.title }}</ng-template>
         </span>
-
-        <span class="done-checkbox">
-          <mat-checkbox [checked]="task.done" (change)="updateTaskDoneStatus($event, task)">
-          </mat-checkbox>
+        
+        <span class="task-edit">
+          <span (click)="openAddTaskModal(task)">
+            <mat-icon class="task-icon">create</mat-icon>
+          </span>
+          <span (click)="deleteTask(task)">
+            <mat-icon class="task-icon">delete</mat-icon>
+          </span>
         </span>
       </div>
     </div>

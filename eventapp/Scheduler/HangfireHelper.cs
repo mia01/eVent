@@ -6,7 +6,7 @@ namespace eventapp.Scheduler
     {
         public static void InitializeJobs()
         {
-            RecurringJob.AddOrUpdate<ReminderNotificationJob>(job => job.Execute(), Cron.Minutely);
+            RecurringJob.AddOrUpdate<ReminderNotificationJob>(job => job.Execute(), Cron.MinuteInterval(5));
         }
     }
 }

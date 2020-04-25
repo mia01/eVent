@@ -3,15 +3,17 @@ using eventapp.Repositories;
 using eventapp.Twilio;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace eventapp.Scheduler
 {
     public class ReminderNotificationJob
     {
-        private const string MessageTemplate =
+        private const string DefaultMessageTemplate =
             "Hi {0}! Just a reminder that you have an task which is due in one hour.";
+        
+        private const string MessageTemplate =
+            "Hi {0}! {1} would like to remind you that you have an task which is due in one hour.";
 
         private readonly UserManager<EventAppUser> _userManager;
         private readonly TwilioClient _twilioCLient;
@@ -28,7 +30,7 @@ namespace eventapp.Scheduler
             var now = DateTime.Now;
             var oneHourMinRange = now.ToUniversalTime().AddHours(1).AddMinutes(-5);
             var oneHourMaxRange = now.ToUniversalTime().AddHours(1);
-            var tasks = _taskRepository.GetTasksDueToday().ToList();
+            var tasks = await _taskRepository.GetTasksDueToday();
             foreach( var task in  tasks)
             {
                 // check task due in the next hour
@@ -37,12 +39,24 @@ namespace eventapp.Scheduler
                     //get user number
                     var assignedUser = await _userManager.FindByIdAsync(task.AssignedTo);
 
+                    var message = "";
+
+                    if (task.AssignedTo == task.CreatedBy)
+                    {
+                        message = string.Format(DefaultMessageTemplate, assignedUser.UserName);
+                    } else
+                    {
+                        var assigner = await _userManager.FindByIdAsync(task.AssignedTo);
+                        message = string.Format(MessageTemplate, assignedUser.UserName, assigner.UserName);
+                    }
+
                     _twilioCLient.SendSmsMessage(
                     assignedUser.PhoneNumber,
-                    string.Format(MessageTemplate, task.Title, task.DueDate.ToString("t")));
+                    message
+                    );
                     
                     task.ReminderSent = true;
-                    _taskRepository.Update(task);
+                    await _taskRepository.Update(task);
                 }
             }
         }

@@ -26,7 +26,17 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-checkbox formControlName="reminder">Remind me 1hr before due date</mat-checkbox>
+
+        <mat-form-field>
+          <mat-label>Assignee</mat-label>
+          <mat-select formControlName="assignedTo">
+            <mat-option [value]="">Myself</mat-option>
+            <mat-option *ngFor="let friend of friends" [value]="friend.friendId">
+              {{ friend.friendUsername }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-checkbox formControlName="reminder" [value]="task.reminder">Remind me 1hr before due date</mat-checkbox>
       </div>
     </mat-dialog-content>
     <mat-dialog-actions>

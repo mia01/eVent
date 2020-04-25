@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   api: {
     base: 'https://localhost:44363/api',
-    login: '/auth/login',
+    friends: '/friends',
     tasks: '/tasks',
     priorities: '/priorities'
   }

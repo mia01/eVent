@@ -33,5 +33,9 @@ export class TasksService {
 
   public updateTask(task: Task): Promise<any> {
     return this.httpClient.post(this.TASK_URL + '/' + task.id, task).toPromise();
+  } 
+  
+  public deleteTask(task: Task): Promise<any> {
+    return this.httpClient.delete(this.TASK_URL + '/' + task.id).toPromise();
   }
 }

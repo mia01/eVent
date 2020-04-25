@@ -8,4 +8,5 @@ export default class Task {
     createdAt: Date;
     updatedAt: Date;
     reminder: boolean;
+    assignedTo: string
 }
