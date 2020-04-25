@@ -28,29 +28,22 @@ namespace eventapp.Controllers
 
         // GET api/tasks
         [HttpGet]
-        public ActionResult<IEnumerable<Task>> Get()
+        public async System.Threading.Tasks.Task<ActionResult<IEnumerable<Task>>> GetAsync()
         {
             var userId = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var tasks = new List<Task>();
             if (userId != null)
             {
-                tasks = _taskRepository.GetByUserId(userId);
+                tasks = await _taskRepository.GetByUserId(userId);
             }
             
             return tasks.ToList();
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return $"value{id}";
-        }
-
         // POST api/tasks
         [HttpPost]
-        public IActionResult Post([FromBody] Task task)
+        public async System.Threading.Tasks.Task<IActionResult> PostAsync([FromBody] Task task)
         {
             if (task == null)
             {
@@ -62,9 +55,12 @@ namespace eventapp.Controllers
                 task.PriorityId = Priority.DefaultPriorityId;
             }
 
-            task.CreatedBy = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
-            task.AssignedTo = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
-            long taskId = _taskRepository.Add(task);
+            if (task.AssignedTo == null || task.AssignedTo == string.Empty)
+            {
+                task.AssignedTo = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+            }
+
+            long taskId = await _taskRepository.Add(task);
             if (taskId != 0)
             {
                 task.Id = taskId;
@@ -76,15 +72,19 @@ namespace eventapp.Controllers
 
         // POST api/tasks/5
         [HttpPost("{id}")]
-        public IActionResult Update(long id, [FromBody] Task task)
+        public async System.Threading.Tasks.Task<IActionResult> UpdateAsync(long id, [FromBody] Task task)
         {
             if (task == null)
             {
                 return BadRequest();
             }
             task.CreatedBy = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
-            task.AssignedTo = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
-            int rowsAffected = _taskRepository.Update(task);
+
+            if (task.AssignedTo == null || task.AssignedTo == string.Empty)
+            {
+                task.AssignedTo = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+            }
+            int rowsAffected = await _taskRepository.Update(task);
             if (rowsAffected > 0)
             {
                 return Ok(task);
@@ -95,9 +95,9 @@ namespace eventapp.Controllers
 
         // DELETE api/tasks/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(long id)
+        public async System.Threading.Tasks.Task<IActionResult> DeleteAsync(long id)
         {
-            int rowsAffected = _taskRepository.Delete(id);
+            int rowsAffected = await _taskRepository.Delete(id);
             if (rowsAffected > 0)
             {
                 return Ok();

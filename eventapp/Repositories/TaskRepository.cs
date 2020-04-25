@@ -3,10 +3,11 @@ using eventapp.Config;
 using eventapp.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eventapp.Repositories
 {
-    public class TaskRepository: BaseRepository<Task>
+    public class TaskRepository: BaseRepository<Models.Task>
     {
         public TaskRepository(Database databaseConfig) : base(databaseConfig)
         {
@@ -14,17 +15,18 @@ namespace eventapp.Repositories
             PrimaryKey = "Id";
         }
 
-        public List<Task> GetByUserId(string userId)
+        public async Task<List<Models.Task>> GetByUserId(string userId)
         {
             using (var dbConnection = Connection)
             {
                 string sQuery = $"SELECT * FROM {Table} WHERE CreatedBy = @UserId OR AssignedTo = @UserId";
                 dbConnection.Open();
-                return dbConnection.Query<Task>(sQuery, new { UserId = userId }).AsList();
+                var result = await dbConnection.QueryAsync<Models.Task>(sQuery, new { UserId = userId });
+                return result.AsList();
             }
         }
 
-        public List<Task> GetTasksDueToday()
+        public async Task<List<Models.Task>> GetTasksDueToday()
         {
             var today = DateTime.Today;
             var nextDay = DateTime.Today.AddDays(1);
@@ -32,7 +34,8 @@ namespace eventapp.Repositories
             {
                 string sQuery = $"SELECT * FROM {Table} WHERE DueDate >= @Today AND DueDate <= @NextDay";
                 dbConnection.Open();
-                return dbConnection.Query<Task>(sQuery, new { Today = today, NextDay = nextDay }).AsList();
+                var result = await dbConnection.QueryAsync<Models.Task>(sQuery, new { Today = today, NextDay = nextDay });
+                return result.AsList();
             }
         }
     }

@@ -5,6 +5,7 @@ using eventapp.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace eventapp.Controllers
 {
@@ -23,9 +24,9 @@ namespace eventapp.Controllers
 
         // GET api/priorities
         [HttpGet]
-        public ActionResult<IEnumerable<Priority>> Get()
+        public async Task<ActionResult<IEnumerable<Priority>>> GetAsync()
         {
-            IEnumerable<Priority> priorities = _priorityRepository.GetAll();
+            IEnumerable<Priority> priorities = await _priorityRepository.GetAll();
             return priorities.ToList();
         }
     }

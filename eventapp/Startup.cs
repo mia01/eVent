@@ -30,6 +30,7 @@ namespace eventapp
             services.AddSingleton(databaseConfig);
             services.AddSingleton<TaskRepository>();
             services.AddSingleton<PriorityRepository>();
+            services.AddSingleton<UserFriendRepository>();
             services.AddSingleton<Twilio.TwilioClient>();
             services.AddScoped<ReminderNotificationJob>();
 
