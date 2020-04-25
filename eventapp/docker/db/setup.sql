@@ -39,6 +39,13 @@ CREATE TABLE IF NOT EXISTS `eventapp`.`Tasks` (
   PRIMARY KEY (`Id`))
 ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS UserFriend (
+`Id` INT NOT NULL AUTO_INCREMENT,
+`UserId` VARCHAR(255) NOT NULL,
+`UserFriendId` VARCHAR(255) NOT NULL,
+`Accepted` TINYINT NOT NULL DEFAULT 0,
+PRIMARY KEY (`Id`),
+UNIQUE KEY (`UserId`, `UserFriendId`));
 
 -- insert records into the priority table
 INSERT INTO eventapp.Priority

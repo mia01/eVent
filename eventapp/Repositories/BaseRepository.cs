@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using Dapper;
 using MySql.Data.MySqlClient;
+using System.Threading.Tasks;
 
 namespace eventapp.Repositories
 {
@@ -36,35 +37,36 @@ namespace eventapp.Repositories
             }
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
             using (IDbConnection dbConnection = Connection)
             {
                 dbConnection.Open();
-                return dbConnection.Query<T>($"SELECT * FROM {Table}");
+                return await dbConnection.QueryAsync<T>($"SELECT * FROM {Table}");
             }
         }
 
-        public T GetById(long id)
+        public async Task<T> GetById(long id)
         {
             using (var dbConnection = Connection)
             {
                 string sQuery = $"SELECT * FROM {Table} WHERE {PrimaryKey} = @Id";
                 dbConnection.Open();
-                return dbConnection.Query<T>(sQuery, new { Id = id }).FirstOrDefault();
+                var result = await dbConnection.QueryAsync<T>(sQuery, new { Id = id });
+                return result.FirstOrDefault();
             }
         }
 
-        public int Delete(long id)
+        public async Task<int> Delete(long id)
         {
             using (MySqlConnection dbConnection = Connection)
             {
                 string sQuery = $"DELETE FROM {Table} WHERE {PrimaryKey} = @Id";
                 dbConnection.Open();
-                return dbConnection.Execute(sQuery, new { Id = id });
+                return await dbConnection.ExecuteAsync(sQuery, new { Id = id });
             }
         }
-        public long Add(T item)
+        public async Task<long> Add(T item)
         {
             var type = item.GetType();
             var properties = type.GetProperties();
@@ -85,11 +87,11 @@ namespace eventapp.Repositories
             {
                 string sQuery = $"INSERT INTO {Table} ({names}) VALUES (@{values}); SELECT LAST_INSERT_ID();";
                 dbConnection.Open();
-                return dbConnection.ExecuteScalar<long>(sQuery, item);
+                return await dbConnection.ExecuteScalarAsync<long>(sQuery, item);
             }
         }
 
-        public int Update(T item)
+        public async Task<int> Update(T item)
         {
             var type = item.GetType();
             var properties = type.GetProperties();
@@ -113,7 +115,7 @@ namespace eventapp.Repositories
             {
                 string sQuery = $"UPDATE {Table} SET {updateString} WHERE {PrimaryKey} = {id}";
                 dbConnection.Open();
-                return dbConnection.Execute(sQuery, item);
+                return await dbConnection.ExecuteAsync(sQuery, item);
             }
         }
     }
