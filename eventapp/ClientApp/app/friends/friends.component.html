@@ -1,0 +1,37 @@
+<div class="friends-actions">
+    <button mat-fab color="primary" (click)="openAddFriendModal()">Add</button>
+</div>
+
+<div class="friend-container">
+    <h2>Your Friend Requests</h2>
+    <div *ngIf="!friendRequests.length">You have no pending friend requests...</div>
+    <div *ngFor="let friendRequest of friendRequests">
+        <div class="friend-request">
+            {{friendRequest.friendUsername}}
+            <mat-icon *ngIf="friendRequest.accepted">check_circle</mat-icon>
+            <mat-icon *ngIf="!friendRequest.accepted">highlight_off</mat-icon>
+        </div>
+    </div>
+    
+    <h2>Your Invitations</h2>
+    <div *ngIf="!friendInvites.length">You have no invitations...</div>
+    <div *ngFor="let friendInvite of friendInvites">
+        <div class="friend-invite">
+            <div class="friend-details-container">
+                {{friendInvite.friendUsername}} invited you to be friends!
+            </div>
+            <div class="accept-button-container">
+                <button mat-flat-button color="warn" type="button" (click)="acceptFriendInvite(friendInvite)">Accept</button>
+            </div>
+        </div>
+    </div>
+
+    <h2>Your Friends</h2>
+    <div *ngIf="!acceptedFriendRequests.length">You have no friends yet. Why not invite one! ...</div>
+    <div *ngFor="let friend of acceptedFriendRequests">
+        <div class="friend-request">
+            {{friend.friendUsername}}
+            <mat-icon>check_circle</mat-icon>
+        </div>
+    </div>
+</div>

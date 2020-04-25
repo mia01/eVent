@@ -7,6 +7,7 @@ import { CalenderComponent } from './calender/calender.component';
 import { AuthGuard } from './services/auth/authGuard.service';
 import { ApplicationPaths } from './models/auth/auth.constants';
 import { LogoutComponent } from './logout/logout.component';
+import { FriendsComponent } from './friends/friends.component';
 
 
 const appRoutes: Routes = [
@@ -26,6 +27,7 @@ const appRoutes: Routes = [
         children: [
             { path: 'tasks', pathMatch: 'full', component: TasksComponent, canActivate: [AuthGuard] },
             { path: 'calender', pathMatch: 'full', component: CalenderComponent, canActivate: [AuthGuard] },
+            { path: 'friends', pathMatch: 'full', component: FriendsComponent, canActivate: [AuthGuard] },
         ]
     }
 ];

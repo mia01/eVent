@@ -1,0 +1,25 @@
+.add-friend-container > mat-form-field {
+    width: 80%;
+}
+.add-friend-container > button {
+    width: 20%;
+}
+
+.add-friend-modal {
+    width: 500px;
+}
+
+.add-friend-modal > *{
+    display: flex;
+    flex-direction: column;
+}
+
+.friend-container {
+    border: 2px green solid;
+    padding: 10px;
+    color: green;
+    mat-icon {
+        vertical-align: middle;
+        float: right;
+    }
+}

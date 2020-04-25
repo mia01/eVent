@@ -26,6 +26,8 @@ import { CalenderComponent } from './calender/calender.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { LogoutComponent } from './logout/logout.component';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
+import { FriendsComponent } from './friends/friends.component';
+import { AddFriendComponent } from './friends/add/add-friend/add-friend.component';
 
 export const sharedModules = [
     BrowserModule,
@@ -65,5 +67,7 @@ export const sharedComponents = [
     SideNavComponent,
     AddTaskComponent,
     CalenderComponent,
+    FriendsComponent,
+    AddFriendComponent,
 ];
   
