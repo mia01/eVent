@@ -9,15 +9,22 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 using TwilioClient = Twilio.TwilioClient;
 
 namespace eventapp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(env.ContentRootPath)
+            .AddJsonFile("appsettings.json", optional: true)
+            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+            .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -32,7 +39,6 @@ namespace eventapp
             services.AddSingleton<PriorityRepository>();
             services.AddSingleton<UserFriendRepository>();
             services.AddSingleton<Twilio.TwilioClient>();
-            services.AddScoped<ReminderNotificationJob>();
 
             services.AddCors(options =>
             {
@@ -61,7 +67,8 @@ namespace eventapp
             services.Configure<TwilioVerifySettings>(Configuration.GetSection("Twilio"));
 
             // hangfire
-            services.AddHangfire(configuration => {
+            services.AddHangfire(configuration =>
+            {
                 configuration.UseStorage(
                     new MySqlStorage(Configuration["Hangfire:ConnectionString"],
                         new MySqlStorageOptions

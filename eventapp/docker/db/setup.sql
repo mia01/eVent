@@ -11,6 +11,131 @@ CREATE TABLE IF NOT EXISTS `eventapp`.`__EFMigrationsHistory` (
     PRIMARY KEY (`MigrationId`)
 );
 
+CREATE TABLE IF NOT EXISTS `AspNetRoles` (
+  `Id` varchar(85) CHARACTER SET utf8mb4 NOT NULL,
+  `Name` varchar(256) CHARACTER SET utf8mb4  DEFAULT NULL,
+  `NormalizedName` varchar(85) CHARACTER SET utf8mb4  DEFAULT NULL,
+  `ConcurrencyStamp` longtext CHARACTER SET utf8mb4 ,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `RoleNameIndex` (`NormalizedName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+
+CREATE TABLE IF NOT EXISTS  `AspNetRoleClaims` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `RoleId` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
+  `ClaimType` longtext CHARACTER SET utf8mb4 ,
+  `ClaimValue` longtext CHARACTER SET utf8mb4 ,
+  PRIMARY KEY (`Id`),
+  KEY `IX_AspNetRoleClaims_RoleId` (`RoleId`),
+  CONSTRAINT `FK_AspNetRoleClaims_AspNetRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `AspNetRoles` (`Id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+
+
+CREATE TABLE IF NOT EXISTS `AspNetUsers` (
+  `Id` varchar(255) CHARACTER SET utf8mb4  NOT NULL,
+  `UserName` varchar(256) CHARACTER SET utf8mb4  DEFAULT NULL,
+  `NormalizedUserName` varchar(256) CHARACTER SET utf8mb4  DEFAULT NULL,
+  `Email` varchar(256) CHARACTER SET utf8mb4  DEFAULT NULL,
+  `NormalizedEmail` varchar(256) CHARACTER SET utf8mb4  DEFAULT NULL,
+  `EmailConfirmed` tinyint(1) NOT NULL,
+  `PasswordHash` longtext CHARACTER SET utf8mb4 ,
+  `SecurityStamp` longtext CHARACTER SET utf8mb4 ,
+  `ConcurrencyStamp` longtext CHARACTER SET utf8mb4 ,
+  `PhoneNumber` longtext CHARACTER SET utf8mb4 ,
+  `PhoneNumberConfirmed` tinyint(1) NOT NULL,
+  `TwoFactorEnabled` tinyint(1) NOT NULL,
+  `LockoutEnd` datetime(6) DEFAULT NULL,
+  `LockoutEnabled` tinyint(1) NOT NULL,
+  `AccessFailedCount` int NOT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `UserNameIndex` (`NormalizedUserName`),
+  KEY `EmailIndex` (`NormalizedEmail`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+
+
+CREATE TABLE IF NOT EXISTS `AspNetUserTokens` (
+  `UserId` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
+  `LoginProvider` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
+  `Name` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
+  `Value` longtext CHARACTER SET utf8mb4 ,
+  PRIMARY KEY (`UserId`,`LoginProvider`,`Name`),
+  CONSTRAINT `FK_AspNetUserTokens_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+
+CREATE TABLE  IF NOT EXISTS `AspNetUserRoles` (
+  `UserId` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
+  `RoleId` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
+  PRIMARY KEY (`UserId`,`RoleId`),
+  KEY `IX_AspNetUserRoles_RoleId` (`RoleId`),
+  CONSTRAINT `FK_AspNetUserRoles_AspNetRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `AspNetRoles` (`Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_AspNetUserRoles_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+
+CREATE TABLE  IF NOT EXISTS `AspNetUserLogins` (
+  `LoginProvider` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
+  `ProviderKey` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
+  `ProviderDisplayName` longtext CHARACTER SET utf8mb4 ,
+  `UserId` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
+  PRIMARY KEY (`LoginProvider`,`ProviderKey`),
+  KEY `IX_AspNetUserLogins_UserId` (`UserId`),
+  CONSTRAINT `FK_AspNetUserLogins_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+
+CREATE TABLE  IF NOT EXISTS `AspNetUserClaims` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `UserId` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
+  `ClaimType` longtext CHARACTER SET utf8mb4 ,
+  `ClaimValue` longtext CHARACTER SET utf8mb4 ,
+  PRIMARY KEY (`Id`),
+  KEY `IX_AspNetUserClaims_UserId` (`UserId`),
+  CONSTRAINT `FK_AspNetUserClaims_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+
+CREATE TABLE IF NOT EXISTS  `PersistedGrants` (
+  `Key` varchar(200) CHARACTER SET utf8mb4  NOT NULL,
+  `Type` varchar(50) CHARACTER SET utf8mb4  NOT NULL,
+  `SubjectId` varchar(200) CHARACTER SET utf8mb4  DEFAULT NULL,
+  `ClientId` varchar(200) CHARACTER SET utf8mb4  NOT NULL,
+  `CreationTime` datetime(6) NOT NULL,
+  `Expiration` datetime(6) DEFAULT NULL,
+  `Data` longtext CHARACTER SET utf8mb4  NOT NULL,
+  PRIMARY KEY (`Key`),
+  KEY `IX_PersistedGrants_Expiration` (`Expiration`),
+  KEY `IX_PersistedGrants_SubjectId_ClientId_Type` (`SubjectId`,`ClientId`,`Type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+
+CREATE TABLE  IF NOT EXISTS  `IdentityUser` (
+  `Id` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
+  `UserName` longtext CHARACTER SET utf8mb4 ,
+  `NormalizedUserName` varchar(85) CHARACTER SET utf8mb4  DEFAULT NULL,
+  `Email` longtext CHARACTER SET utf8mb4 ,
+  `NormalizedEmail` varchar(85) CHARACTER SET utf8mb4  DEFAULT NULL,
+  `EmailConfirmed` tinyint(1) NOT NULL,
+  `PasswordHash` longtext CHARACTER SET utf8mb4 ,
+  `SecurityStamp` longtext CHARACTER SET utf8mb4 ,
+  `ConcurrencyStamp` longtext CHARACTER SET utf8mb4 ,
+  `PhoneNumber` longtext CHARACTER SET utf8mb4 ,
+  `PhoneNumberConfirmed` tinyint(1) NOT NULL,
+  `TwoFactorEnabled` tinyint(1) NOT NULL,
+  `LockoutEnd` datetime(6) DEFAULT NULL,
+  `LockoutEnabled` tinyint(1) NOT NULL,
+  `AccessFailedCount` int NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `DeviceCodes` (
+  `UserCode` varchar(200) CHARACTER SET utf8mb4  NOT NULL,
+  `DeviceCode` varchar(200) CHARACTER SET utf8mb4  NOT NULL,
+  `SubjectId` varchar(200) CHARACTER SET utf8mb4  DEFAULT NULL,
+  `ClientId` varchar(200) CHARACTER SET utf8mb4  NOT NULL,
+  `CreationTime` datetime(6) NOT NULL,
+  `Expiration` datetime(6) NOT NULL,
+  `Data` longtext CHARACTER SET utf8mb4  NOT NULL,
+  PRIMARY KEY (`UserCode`),
+  UNIQUE KEY `IX_DeviceCodes_DeviceCode` (`DeviceCode`),
+  KEY `IX_DeviceCodes_Expiration` (`Expiration`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- Create priority table
 CREATE TABLE IF NOT EXISTS `eventapp`.`Priority` (
   `Id` INT NOT NULL AUTO_INCREMENT,
