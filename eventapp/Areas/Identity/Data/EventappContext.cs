@@ -1,12 +1,11 @@
-﻿using eventapp.Areas.Identity.Data;
+﻿using eventapp.Domain.Idenitity;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-namespace eventapp.Models
+namespace eventapp.Idenitity.Data
 {
     public class EventAppContext : ApiAuthorizationDbContext<EventAppUser>
     {

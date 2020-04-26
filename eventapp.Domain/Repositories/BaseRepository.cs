@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Dapper;
+using eventapp.Domain.Config;
+using MySql.Data.MySqlClient;
 using System.Collections;
 using System.Collections.Generic;
-using eventapp.Config;
 using System.Data;
 using System.Linq;
-using Dapper;
-using MySql.Data.MySqlClient;
 using System.Threading.Tasks;
 
-namespace eventapp.Repositories
+namespace eventapp.Domain.Repositories
 {
     public class BaseRepository<T>
     {

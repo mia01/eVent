@@ -1,5 +1,5 @@
-﻿using eventapp.Models;
-using eventapp.Repositories;
+﻿using eventapp.Domain.Models;
+using eventapp.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using Task = eventapp.Models.Task;
+using Task = eventapp.Domain.Models.Task;
 
 namespace eventapp.Controllers
 {
@@ -59,6 +59,7 @@ namespace eventapp.Controllers
             {
                 task.AssignedTo = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
+            task.CreatedBy = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             long taskId = await _taskRepository.Add(task);
             if (taskId != 0)
@@ -78,12 +79,12 @@ namespace eventapp.Controllers
             {
                 return BadRequest();
             }
-            task.CreatedBy = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             if (task.AssignedTo == null || task.AssignedTo == string.Empty)
             {
                 task.AssignedTo = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
+
             int rowsAffected = await _taskRepository.Update(task);
             if (rowsAffected > 0)
             {

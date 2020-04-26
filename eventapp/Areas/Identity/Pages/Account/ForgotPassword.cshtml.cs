@@ -1,4 +1,4 @@
-﻿using eventapp.Areas.Identity.Data;
+﻿using eventapp.Domain.Idenitity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;

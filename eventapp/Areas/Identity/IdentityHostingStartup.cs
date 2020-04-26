@@ -1,5 +1,5 @@
-﻿using eventapp.Areas.Identity.Data;
-using eventapp.Models;
+﻿using eventapp.Domain.Idenitity;
+using eventapp.Idenitity.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

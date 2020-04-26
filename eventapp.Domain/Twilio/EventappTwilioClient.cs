@@ -3,16 +3,16 @@ using Twilio.Clients;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
 
-namespace eventapp.Twilio
+namespace eventapp.Domain.Twilio
 {
-    public class TwilioClient
+    public class EventappTwilioClient
     {
         private readonly ITwilioRestClient _client;
         private readonly string _accountSid;
         private readonly string _authToken;
         private readonly string _twilioNumber;
 
-        public TwilioClient(IConfiguration configuration)
+        public EventappTwilioClient(IConfiguration configuration)
         {
             _accountSid = configuration["Twilio:AccountSID"];
             _authToken = configuration["Twilio:AuthToken"];

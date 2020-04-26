@@ -1,7 +1,7 @@
-﻿using eventapp.Areas.Identity.Data;
-using eventapp.Dto;
-using eventapp.Models;
-using eventapp.Repositories;
+﻿using eventapp.Domain.Dto;
+using eventapp.Domain.Idenitity;
+using eventapp.Domain.Models;
+using eventapp.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;

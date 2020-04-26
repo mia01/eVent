@@ -1,11 +1,12 @@
-﻿using eventapp.Areas.Identity.Data;
-using eventapp.Repositories;
-using eventapp.Twilio;
+﻿
+using eventapp.Domain.Idenitity;
+using eventapp.Domain.Repositories;
+using eventapp.Domain.Twilio;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading.Tasks;
 
-namespace eventapp.Scheduler
+namespace eventapp.Domain.Jobs
 {
     public class ReminderNotificationJob
     {
@@ -16,10 +17,10 @@ namespace eventapp.Scheduler
             "Hi {0}! {1} would like to remind you that you have an task which is due in one hour.";
 
         private readonly UserManager<EventAppUser> _userManager;
-        private readonly TwilioClient _twilioCLient;
+        private readonly EventappTwilioClient _twilioCLient;
         private readonly TaskRepository _taskRepository;
 
-        public ReminderNotificationJob(UserManager<EventAppUser> userManager, TwilioClient twilioClient, TaskRepository taskRepository)
+        public ReminderNotificationJob(UserManager<EventAppUser> userManager, EventappTwilioClient twilioClient, TaskRepository taskRepository)
         {
             _userManager = userManager;
             _twilioCLient = twilioClient;

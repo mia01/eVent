@@ -1,12 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using eventapp.Areas.Identity.Data;
-using eventapp.Config;
-using Microsoft.AspNetCore.Authorization;
+﻿using eventapp.Domain.Config;
+using eventapp.Domain.Idenitity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
+using System;
+using System.Threading.Tasks;
 using Twilio.Rest.Verify.V2.Service;
 
 namespace eventapp.Areas.Identity.Pages.Account

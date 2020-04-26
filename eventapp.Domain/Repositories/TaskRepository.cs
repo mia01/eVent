@@ -1,11 +1,10 @@
 ﻿using Dapper;
-using eventapp.Config;
-using eventapp.Models;
+using eventapp.Domain.Config;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace eventapp.Repositories
+namespace eventapp.Domain.Repositories
 {
     public class TaskRepository: BaseRepository<Models.Task>
     {

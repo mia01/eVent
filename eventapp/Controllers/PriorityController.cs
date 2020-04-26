@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using eventapp.Models;
-using eventapp.Repositories;
+﻿using eventapp.Domain.Models;
+using eventapp.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace eventapp.Controllers

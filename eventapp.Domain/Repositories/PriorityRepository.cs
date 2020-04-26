@@ -1,7 +1,7 @@
-﻿using eventapp.Config;
-using eventapp.Models;
+﻿using eventapp.Domain.Config;
+using eventapp.Domain.Models;
 
-namespace eventapp.Repositories
+namespace eventapp.Domain.Repositories
 {
     public class PriorityRepository: BaseRepository<Priority>
     {

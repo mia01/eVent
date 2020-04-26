@@ -1,16 +1,15 @@
-﻿using eventapp.Config;
-using eventapp.Repositories;
-using eventapp.Scheduler;
-using Hangfire;
-using Hangfire.MySql;
+﻿using eventapp.Domain.Config;
+using eventapp.Domain.Jobs;
+using eventapp.Domain.Repositories;
+using eventapp.Domain.Twilio;
+using EventNotification;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System;
-using TwilioClient = Twilio.TwilioClient;
+using Twilio;
 
 namespace eventapp
 {
@@ -38,7 +37,9 @@ namespace eventapp
             services.AddSingleton<TaskRepository>();
             services.AddSingleton<PriorityRepository>();
             services.AddSingleton<UserFriendRepository>();
-            services.AddSingleton<Twilio.TwilioClient>();
+            services.AddSingleton<EventappTwilioClient>();
+            services.AddScoped<ReminderNotificationJob>();
+            services.AddSingleton<IHostedService, Worker>();
 
             services.AddCors(options =>
             {
@@ -65,20 +66,6 @@ namespace eventapp
             var authToken = Configuration["Twilio:AuthToken"];
             TwilioClient.Init(accountSid, authToken);
             services.Configure<TwilioVerifySettings>(Configuration.GetSection("Twilio"));
-
-            // hangfire
-            services.AddHangfire(configuration =>
-            {
-                configuration.UseStorage(
-                    new MySqlStorage(Configuration["Hangfire:ConnectionString"],
-                        new MySqlStorageOptions
-                        {
-                            TablesPrefix = "Hangfire"
-                        }
-                    )
-                );
-            });
-            services.AddHangfireServer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -103,10 +90,6 @@ namespace eventapp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            // hangfire
-            app.UseHangfireDashboard("/hangfire");
-            app.UseHangfireServer();
-            HangfireHelper.InitializeJobs();
 
             if (!env.IsDevelopment())
             {

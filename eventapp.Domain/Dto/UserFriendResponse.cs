@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace eventapp.Models
+﻿namespace eventapp.Domain.Models
 {
     public class UserFriendResponse
     {

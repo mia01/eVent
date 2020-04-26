@@ -1,4 +1,4 @@
-﻿namespace eventapp.Config
+﻿namespace eventapp.Domain.Config
 {
     public class Database
     {

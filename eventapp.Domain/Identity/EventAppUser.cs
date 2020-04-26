@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace eventapp.Areas.Identity.Data
+namespace eventapp.Domain.Idenitity
 {
     public class EventAppUser : IdentityUser
     {

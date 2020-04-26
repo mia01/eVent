@@ -1,4 +1,4 @@
-﻿namespace eventapp.Dto
+﻿namespace eventapp.Domain.Dto
 {
     public class UserFriendRequest
     {
