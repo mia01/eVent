@@ -3,6 +3,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import { TasksService } from '../services/tasks.service';
 import { EventType } from '../models/enums/EventTypes.enum';
 import Task from '../models/task';
+import { EventService } from '../services/event.service';
 @Component({
   selector: 'app-calender',
   templateUrl: './calender.component.html',
@@ -11,16 +12,25 @@ import Task from '../models/task';
 export class CalenderComponent implements OnInit {
   calendarPlugins = [dayGridPlugin];
   public eventSources: Array<any> = [];
-  constructor(private taskService: TasksService) { }
+  constructor(private taskService: TasksService, private eventService: EventService) { }
 
   ngOnInit(): void {
     this.eventSources = [
-      this.fetchTasks.bind(this)
+      this.fetchTasks.bind(this),
+      this.fetchEvents.bind(this)
     ]
   }
 
   private async fetchTasks(fetchInfo, successCallback, failureCallback): Promise<void> {
     await this.taskService.getTasksAsEvents().then((events) => {
+      successCallback(events);
+    }).catch((error) => {
+      failureCallback(error);
+    });
+  }
+  
+  private async fetchEvents(fetchInfo, successCallback, failureCallback): Promise<void> {
+    await this.eventService.getAllAddaptedEvents().then((events) => {
       successCallback(events);
     }).catch((error) => {
       failureCallback(error);
@@ -47,5 +57,8 @@ export class CalenderComponent implements OnInit {
         info.el.classList.add("low-priority");
       }
     };
+
+    console.log("rendering");
+    console.log(info);
   }
 }

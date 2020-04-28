@@ -1,0 +1,12 @@
+.add-event-modal {
+    width: 500px;
+}
+
+.add-event-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-event-container > * {
+    width: 100%;
+}

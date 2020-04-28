@@ -6,6 +6,8 @@ export default class Task {
     priorityId: number;
     dueDate: Date;
     createdAt: Date;
+    createdByUsername: string;
+    assignedToUsername: string;
     updatedAt: Date;
     reminder: boolean;
     assignedTo: string

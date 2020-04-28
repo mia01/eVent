@@ -8,10 +8,11 @@ import { AuthGuard } from './services/auth/authGuard.service';
 import { ApplicationPaths } from './models/auth/auth.constants';
 import { LogoutComponent } from './logout/logout.component';
 import { FriendsComponent } from './friends/friends.component';
+import { EventsComponent } from './tasks copy/events.component';
 
 
 const appRoutes: Routes = [
-    { path: '', redirectTo: 'app', pathMatch: 'full', canActivate: [AuthGuard]},
+    { path: '', redirectTo: 'app/calender', pathMatch: 'full', canActivate: [AuthGuard]},
     { path: ApplicationPaths.Login, component: LoginComponent },
     { path: ApplicationPaths.LoginFailed, component: LoginComponent },
     { path: ApplicationPaths.LoginCallback, component: LoginComponent },
@@ -25,6 +26,7 @@ const appRoutes: Routes = [
         component: SideNavComponent,
         canActivate: [AuthGuard],
         children: [
+            { path: 'events', pathMatch: 'full', component: EventsComponent, canActivate: [AuthGuard] },
             { path: 'tasks', pathMatch: 'full', component: TasksComponent, canActivate: [AuthGuard] },
             { path: 'calender', pathMatch: 'full', component: CalenderComponent, canActivate: [AuthGuard] },
             { path: 'friends', pathMatch: 'full', component: FriendsComponent, canActivate: [AuthGuard] },

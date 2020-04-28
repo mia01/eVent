@@ -1,6 +1,7 @@
 ﻿using eventapp.Domain.Config;
 using eventapp.Domain.Jobs;
 using eventapp.Domain.Repositories;
+using eventapp.Domain.Services;
 using eventapp.Domain.Twilio;
 using eventapp.Helpers.Services;
 using EventNotification;
@@ -39,6 +40,7 @@ namespace eventapp
             services.AddSingleton<TaskRepository>();
             services.AddSingleton<PriorityRepository>();
             services.AddSingleton<UserFriendRepository>();
+            services.AddScoped<UserFriendService>();
             services.AddSingleton<EventappTwilioClient>();
             services.AddScoped<ReminderNotificationJob>();
             services.AddSingleton<IHostedService, Worker>();

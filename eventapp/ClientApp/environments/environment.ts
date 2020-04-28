@@ -8,6 +8,7 @@ export const environment = {
     base: 'https://localhost:44363/api',
     friends: '/friends',
     tasks: '/tasks',
+    events: '/events',
     priorities: '/priorities'
   }
 };

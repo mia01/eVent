@@ -9,6 +9,7 @@ import Priority from '../models/priority';
 import IAddTaskForm from '../interfaces/addTaskForm';
 import { FriendsService } from '../services/friends.service';
 import UserFriendResponse from '../models/UserFriendResponse';
+import { AuthorizeService } from '../services/auth/authorize.service';
 
 @Component({
   selector: 'app-tasks',
@@ -18,11 +19,13 @@ import UserFriendResponse from '../models/UserFriendResponse';
 export class TasksComponent implements OnInit {
 
   addTaskModal: MatDialogRef<AddTaskComponent>;
+  public username: string;
   public tasks: Task[] = [];
   public priorities: Priority[] = [];
   public friends: UserFriendResponse[] = [];
 
   constructor(
+    private authService: AuthorizeService,
     private taskService: TasksService,
     private friendService: FriendsService,
     private priorityService: PriorityService,
@@ -30,6 +33,9 @@ export class TasksComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.authService.getUser().subscribe(u => {
+      this.username = u.name;
+    });
     this.priorities = await this.priorityService.getAllPriorities();
     this.tasks = await this.taskService.getAllTasks();
     this.friends = await this.friendService.getUserFriends();
@@ -56,7 +62,6 @@ export class TasksComponent implements OnInit {
 
   async deleteTask(task: Task) {
     var response = await this.taskService.deleteTask(task);
-    console.log(response);
     let taskIndex = this.tasks.indexOf(task);
     this.tasks.splice(taskIndex, 1);
   }

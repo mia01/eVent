@@ -1,0 +1,29 @@
+<div class="event-actions">
+  <button mat-fab color="primary" (click)="openAddEventModal()">Add</button>
+</div>
+<div class="events-container">
+  <div>
+    <div role="listitem" class="event-list-item" *ngFor="let event of events">
+      <div class="event-item">
+        
+        <span class="event-description">
+          <del *ngIf="event.done;else eventDescription">
+            {{ event.title }}
+          </del>
+          
+          <ng-template #eventDescription>{{ event.title }}</ng-template>
+        </span>
+        <span *ngIf="event.createdByUsername != username"> Event held by: {{task.createdByUsername}}</span>
+        
+        <span class="event-edit">
+          <span (click)="openAddEventModal(event)">
+            <mat-icon class="event-icon">create</mat-icon>
+          </span>
+          <span (click)="deleteEvent(event)">
+            <mat-icon class="event-icon">delete</mat-icon>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="add-event-modal">
+  <form [formGroup]="form" (ngSubmit)="submit(form)">
+    <h1 *ngIf="!event.id" mat-dialog-title>Add New Event</h1>
+    <h1 *ngIf="event.id" mat-dialog-title>Update Event</h1>
+    <mat-dialog-content>
+      <div class="add-event-container">
+        <input type="hidden" formControlName="id">
+        <mat-form-field>
+          <input matInput formControlName="title" placeholder="Event title" required>
+        </mat-form-field>
+
+        <mat-form-field>
+          <textarea matInput formControlName="description" placeholder="Enter a description for your event"></textarea>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a start date and time"
+            formControlName="startDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #picker [showSpinners]="true" [stepHour]="1" [stepMinute]="1" [stepSecond]="1">
+          </ngx-mat-datetime-picker>
+        </mat-form-field>
+        
+        <mat-form-field>
+          <input matInput [ngxMatDatetimePicker]="endDatepicker" placeholder="Choose an end date and time" formControlName="endDate">
+          <mat-datepicker-toggle matSuffix [for]="endDatepicker"></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #endDatepicker [showSpinners]="true" [stepHour]="1" [stepMinute]="1" [stepSecond]="1">
+          </ngx-mat-datetime-picker>
+        </mat-form-field>
+
+        <mat-checkbox formControlName="reminder" >Send reminder 1hr before start date
+        </mat-checkbox>
+
+        <mat-checkbox formControlName="publicEvent" >Let my friends see this on their calender
+        </mat-checkbox>
+
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button color="warn" type="button" mat-dialog-close>Cancel</button>
+      <button *ngIf="!event.id" mat-button color="primary" type="submit" [disabled]="form.invalid">Add</button>
+      <button *ngIf="event.id" mat-button color="primary" type="submit" [disabled]="form.invalid">Update</button>
+    </mat-dialog-actions>
+  </form>
+</div>

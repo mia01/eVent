@@ -1,8 +1,11 @@
-﻿using eventapp.Domain.Models;
+﻿using eventapp.Domain.Dto;
+using eventapp.Domain.Idenitity;
+using eventapp.Domain.Models;
 using eventapp.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,26 +22,42 @@ namespace eventapp.Controllers
     {
         private readonly TaskRepository _taskRepository;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly UserManager<EventAppUser> _userManager;
 
-        public TaskController(TaskRepository taskRepository, IHttpContextAccessor httpContextAccessor)
+        public TaskController(TaskRepository taskRepository, IHttpContextAccessor httpContextAccessor, UserManager<EventAppUser> userManager)
         {
             _taskRepository = taskRepository;
             _contextAccessor = httpContextAccessor;
+            _userManager = userManager;
         }
 
         // GET api/tasks
         [HttpGet]
-        public async System.Threading.Tasks.Task<ActionResult<IEnumerable<Task>>> GetAsync()
+        public async System.Threading.Tasks.Task<ActionResult<IEnumerable<TaskResponse>>> GetAsync()
         {
             var userId = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var tasks = new List<Task>();
             if (userId != null)
             {
-                tasks = await _taskRepository.GetByUserId(userId);
+                var tasks = await _taskRepository.GetByUserId(userId);
+                var taskResponses = tasks.Select(async t => new TaskResponse
+                {
+                    Id = t.Id,
+                    Title = t.Title,
+                    Description = t.Description,
+                    Done = t.Done,
+                    PriorityId = t.PriorityId,
+                    DueDate = t.DueDate,
+                    CreatedBy = t.CreatedBy,
+                    CreatedByUsername = (await _userManager.FindByIdAsync(t.CreatedBy)).UserName,
+                    AssignedTo = t.AssignedTo,
+                    AssignedToUsername = (await _userManager.FindByIdAsync(t.AssignedTo)).UserName,
+                    Reminder = t.Reminder
+                });
+                return await System.Threading.Tasks.Task.WhenAll(taskResponses);
             }
             
-            return tasks.ToList();
+            return new List<TaskResponse>();
         }
 
         // POST api/tasks
@@ -84,7 +103,8 @@ namespace eventapp.Controllers
             {
                 task.AssignedTo = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
-
+            var originalTask = await _taskRepository.GetById(task.Id.Value);
+            task.CreatedBy = originalTask.CreatedBy;
             int rowsAffected = await _taskRepository.Update(task);
             if (rowsAffected > 0)
             {

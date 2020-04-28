@@ -1,8 +1,11 @@
-﻿using eventapp.Domain.Models;
+﻿using eventapp.Domain.Dto;
+using eventapp.Domain.Idenitity;
+using eventapp.Domain.Models;
 using eventapp.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,26 +21,44 @@ namespace eventapp.Controllers
     {
         private readonly EventRepository _eventRepository;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly UserManager<EventAppUser> _userManager;
 
-        public EventController(EventRepository eventRepository, IHttpContextAccessor httpContextAccessor)
+        public EventController(EventRepository eventRepository, IHttpContextAccessor httpContextAccessor, UserManager<EventAppUser> userManager)
         {
             _eventRepository = eventRepository;
             _contextAccessor = httpContextAccessor;
+            _userManager = userManager;
         }
 
         // GET api/events
         [HttpGet]
-        public async System.Threading.Tasks.Task<ActionResult<IEnumerable<Event>>> GetAsync()
+        public async System.Threading.Tasks.Task<ActionResult<IEnumerable<EventResponse>>> GetAsync()
         {
             var userId = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var events = new List<Event>();
+            var responses = new List<EventResponse>();
             if (userId != null)
             {
-                events = await _eventRepository.GetByUserId(userId);
+                var events = await _eventRepository.GetByUserId(userId);
+
+                foreach (var e in events)
+                {
+                    responses.Add(new EventResponse
+                    {
+                        Id = e.Id,
+                        Title = e.Title,
+                        Description = e.Description,
+                        CreatedBy = e.CreatedBy,
+                        CreatedByUsername = (await _userManager.FindByIdAsync(e.CreatedBy)).UserName,
+                        StartDate = e.StartDate,
+                        EndDate = e.EndDate,
+                        Reminder = e.Reminder,
+                        PublicEvent = e.PublicEvent
+                    });
+                }
             }
             
-            return events.ToList();
+            return responses;
         }
 
         // POST api/events
@@ -69,6 +90,8 @@ namespace eventapp.Controllers
             {
                 return BadRequest();
             }
+            var originalEvent = await _eventRepository.GetById(eventRecord.Id.Value);
+            eventRecord.CreatedBy = originalEvent.CreatedBy;
 
             int rowsAffected = await _eventRepository.Update(eventRecord);
             if (rowsAffected > 0)

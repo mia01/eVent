@@ -41,7 +41,11 @@ export class AddTaskComponent implements OnInit {
 
   submit(form) {
     if (form.valid) {
-      this.modal.close(form.value as Task);
+      var task = form.value as Task;
+      if (task.reminder == null) {
+        task.reminder = false;
+      }
+      this.modal.close(task);
     }
   }
 }

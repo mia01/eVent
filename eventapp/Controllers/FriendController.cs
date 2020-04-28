@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using eventapp.Domain.Services;
 
 namespace eventapp.Controllers
 {
@@ -22,13 +23,15 @@ namespace eventapp.Controllers
     {
         private readonly UserManager<EventAppUser> _userManager;
         private readonly UserFriendRepository _userFriendRepository;
+        private readonly UserFriendService _userFriendService;
         private readonly IHttpContextAccessor _contextAccessor;
 
-        public FriendController(UserManager<EventAppUser> userManager, UserFriendRepository userRepository, IHttpContextAccessor httpContextAccessor)
+        public FriendController(UserManager<EventAppUser> userManager, UserFriendRepository userRepository, IHttpContextAccessor httpContextAccessor, UserFriendService userFriendService)
         {
             _userManager = userManager;
             _userFriendRepository = userRepository;
             _contextAccessor = httpContextAccessor;
+            _userFriendService = userFriendService;
         }
 
         [HttpGet("FindByUsername")]
@@ -51,27 +54,9 @@ namespace eventapp.Controllers
 
             if (userId != null)
             {
-                var userFriends = await _userFriendRepository.GetUserFriends(userId);
-                var userAcceptedInvites = userFriends.Where(f => f.UserFriendId != userId).Select(async f => new UserFriendResponse
-                {
-                    Id = f.Id,
-                    FriendId = f.UserFriendId,
-                    FriendUsername = (await _userManager.FindByIdAsync(f.UserFriendId)).UserName,
-                    Accepted = f.Accepted
-                }).ToList();
-
-                var userAcceptedRequests = userFriends.Where(f => f.UserId != userId).Select(async f => new UserFriendResponse
-                {
-                    Id = f.Id,
-                    FriendId = f.UserId,
-                    FriendUsername = (await _userManager.FindByIdAsync(f.UserId)).UserName,
-                    Accepted = f.Accepted
-                }).ToList();
-
-                var userAcceptedInvitesList = await System.Threading.Tasks.Task.WhenAll(userAcceptedInvites);
-                var userAcceptedRequestsList = await System.Threading.Tasks.Task.WhenAll(userAcceptedRequests);
-
-                return userAcceptedRequestsList.Union(userAcceptedInvitesList).ToList();
+                var userFriends = await _userFriendService.GetUserFriends(userId);
+              
+                return userFriends;
             }
 
             return new List<UserFriendResponse>();

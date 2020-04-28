@@ -1,0 +1,32 @@
+.events-container {
+    padding: 15px;
+    width: 90%;
+    margin: auto;
+}
+
+.event-actions {
+    padding: 10px;
+    text-align: right;
+}
+
+.event-icon {
+    margin-right: 5px;
+    cursor: pointer;
+    vertical-align: bottom;
+}
+
+.event-list-item {
+    border-left: 3px solid grey;
+}
+
+.event-item {
+    width: 100%;
+    position: relative;
+    padding: 10px;
+    margin: 10px;
+}
+
+.event-edit {
+    right: 10px;
+    position: absolute;
+}

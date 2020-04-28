@@ -28,6 +28,8 @@ import { LogoutComponent } from './logout/logout.component';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 import { FriendsComponent } from './friends/friends.component';
 import { AddFriendComponent } from './friends/add/add-friend/add-friend.component';
+import { EventsComponent } from './tasks copy/events.component';
+import { AddEventComponent } from './tasks copy/add/add.component';
 
 export const sharedModules = [
     BrowserModule,
@@ -69,5 +71,7 @@ export const sharedComponents = [
     CalenderComponent,
     FriendsComponent,
     AddFriendComponent,
+    EventsComponent,
+    AddEventComponent
 ];
   

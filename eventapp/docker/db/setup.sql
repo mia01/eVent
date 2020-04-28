@@ -179,3 +179,21 @@ VALUES
 ('low', 'Low', '#008000'),
 ('medium', 'Medium', '#FFA500'),
 ('high', 'High', '#ff0000');
+
+-- Create event table
+CREATE TABLE IF NOT EXISTS `eventapp`.`Events` (
+  `Id` INT NOT NULL AUTO_INCREMENT,
+  `Title` VARCHAR(100) NOT NULL,
+  `Description` TEXT NULL,
+  `CreatedAt` DATETIME NOT NULL,
+  `CreatedBy`  VARCHAR(255) NULL,
+  `UpdatedAt` DATETIME NULL,
+  `StartDate` DATETIME NULL,
+  `EndDate` DATETIME NULL,
+  `Reminder` TINYINT NOT NULL,
+  `PublicEvent` TINYINT NOT NULL,
+  `ReminderSent` TINYINT NOT NULL DEFAULT 0,
+  FOREIGN KEY (PriorityId)
+  REFERENCES Priority(Id),
+  PRIMARY KEY (`Id`))
+ENGINE = InnoDB;
