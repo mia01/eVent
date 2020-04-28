@@ -35,6 +35,7 @@ namespace eventapp
             var databaseConfig = new Database();
             Configuration.Bind("Database", databaseConfig);
             services.AddSingleton(databaseConfig);
+            services.AddSingleton<EventRepository>();
             services.AddSingleton<TaskRepository>();
             services.AddSingleton<PriorityRepository>();
             services.AddSingleton<UserFriendRepository>();
