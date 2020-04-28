@@ -47,7 +47,7 @@ namespace eventapp.Domain.Jobs
                         message = string.Format(DefaultMessageTemplate, assignedUser.UserName);
                     } else
                     {
-                        var assigner = await _userManager.FindByIdAsync(task.AssignedTo);
+                        var assigner = await _userManager.FindByIdAsync(task.CreatedBy);
                         message = string.Format(MessageTemplate, assignedUser.UserName, assigner.UserName);
                     }
 

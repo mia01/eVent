@@ -2,6 +2,7 @@
 using eventapp.Domain.Jobs;
 using eventapp.Domain.Repositories;
 using eventapp.Domain.Twilio;
+using eventapp.Helpers.Services;
 using EventNotification;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,6 +41,7 @@ namespace eventapp
             services.AddSingleton<EventappTwilioClient>();
             services.AddScoped<ReminderNotificationJob>();
             services.AddSingleton<IHostedService, Worker>();
+            services.AddSingleton<CountryService>();
 
             services.AddCors(options =>
             {

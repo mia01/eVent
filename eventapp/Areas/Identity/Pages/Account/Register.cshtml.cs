@@ -6,14 +6,18 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using eventapp.Domain.Idenitity;
+using eventapp.Helpers.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Twilio.Exceptions;
+using Twilio.Rest.Lookups.V1;
 
 namespace eventapp.Areas.Identity.Pages.Account
 {
@@ -24,17 +28,21 @@ namespace eventapp.Areas.Identity.Pages.Account
         private readonly UserManager<EventAppUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        public List<SelectListItem> AvailableCountries { get; }
+
 
         public RegisterModel(
             UserManager<EventAppUser> userManager,
             SignInManager<EventAppUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            CountryService countryService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            AvailableCountries = countryService.GetCountries();
         }
 
         [BindProperty]
@@ -55,8 +63,10 @@ namespace eventapp.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
+            [Display(Name = "Phone number country")]
+            public string PhoneNumberCountryCode { get; set; }
+
             [Required]
-            [StringLength(13, ErrorMessage = "The {0} must be at least {1} and at max {2} characters long.", MinimumLength = 11)]
             [DataType(DataType.PhoneNumber)]
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
@@ -83,9 +93,40 @@ namespace eventapp.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            var numberToSave = "";
+            // validate the phone number
+            try
+            {
+                var numberDetails = await PhoneNumberResource.FetchAsync(
+                    pathPhoneNumber: new Twilio.Types.PhoneNumber(Input.PhoneNumber),
+                    countryCode: Input.PhoneNumberCountryCode,
+                    type: new List<string> { "carrier" });
+
+                // only allow user to set phone number if capable of receiving SMS
+                if (numberDetails?.Carrier != null
+                    && numberDetails.Carrier.TryGetValue("type", out var phoneNumberType)
+                    && phoneNumberType == "landline")
+                {
+                    ModelState.AddModelError($"{nameof(Input)}.{nameof(Input.PhoneNumber)}",
+                        $"The number you entered does not appear to be capable of receiving SMS ({phoneNumberType}). Please enter a different value and try again");
+                    return Page();
+                }
+
+                numberToSave = numberDetails.PhoneNumber.ToString();
+
+            }
+            catch (ApiException ex)
+            {
+                ModelState.AddModelError($"{nameof(Input)}.{nameof(Input.PhoneNumber)}",
+                    $"The number you entered was not valid (Twilio code {ex.Code}), please check it and try again");
+                return Page();
+            }
+
+
             if (ModelState.IsValid)
             {
-                var user = new EventAppUser { UserName = Input.UserName, Email = Input.Email, PhoneNumber = Input.PhoneNumber };
+                var user = new EventAppUser { UserName = Input.UserName, Email = Input.Email, PhoneNumber = numberToSave };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
