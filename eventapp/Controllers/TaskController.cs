@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -37,27 +38,31 @@ namespace eventapp.Controllers
         {
             var userId = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+            var taskResponses = new List<TaskResponse>();
             if (userId != null)
             {
                 var tasks = await _taskRepository.GetByUserId(userId);
-                var taskResponses = tasks.Select(async t => new TaskResponse
+                foreach (var task in tasks)
                 {
-                    Id = t.Id,
-                    Title = t.Title,
-                    Description = t.Description,
-                    Done = t.Done,
-                    PriorityId = t.PriorityId,
-                    DueDate = t.DueDate,
-                    CreatedBy = t.CreatedBy,
-                    CreatedByUsername = (await _userManager.FindByIdAsync(t.CreatedBy)).UserName,
-                    AssignedTo = t.AssignedTo,
-                    AssignedToUsername = (await _userManager.FindByIdAsync(t.AssignedTo)).UserName,
-                    Reminder = t.Reminder
-                });
-                return await System.Threading.Tasks.Task.WhenAll(taskResponses);
+                    taskResponses.Add(new TaskResponse
+                    {
+                        Id = task.Id,
+                        Title = task.Title,
+                        Description = task.Description,
+                        Done = task.Done,
+                        PriorityId = task.PriorityId,
+                        DueDate = task.DueDate,
+                        CreatedBy = task.CreatedBy,
+                        CreatedByUsername = (await _userManager.FindByIdAsync(task.CreatedBy)).UserName,
+                        AssignedTo = task.AssignedTo,
+                        AssignedToUsername = (await _userManager.FindByIdAsync(task.AssignedTo)).UserName,
+                        Reminder = task.Reminder
+                    });
+
+                }
             }
             
-            return new List<TaskResponse>();
+            return taskResponses;
         }
 
         // POST api/tasks
@@ -79,12 +84,26 @@ namespace eventapp.Controllers
                 task.AssignedTo = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
             task.CreatedBy = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+            task.CreatedAt = DateTime.Now;
 
             long taskId = await _taskRepository.Add(task);
             if (taskId != 0)
             {
-                task.Id = taskId;
-                return Ok(task);
+                var response = new TaskResponse
+                {
+                    Id = taskId,
+                    Title = task.Title,
+                    Description = task.Description,
+                    Done = task.Done,
+                    PriorityId = task.PriorityId,
+                    DueDate = task.DueDate,
+                    CreatedBy = task.CreatedBy,
+                    CreatedByUsername = (await _userManager.FindByIdAsync(task.CreatedBy)).UserName,
+                    AssignedTo = task.AssignedTo,
+                    AssignedToUsername = (await _userManager.FindByIdAsync(task.AssignedTo)).UserName,
+                    Reminder = task.Reminder
+                };
+                return Ok(response);
             }
 
             return StatusCode(500);
@@ -105,10 +124,30 @@ namespace eventapp.Controllers
             }
             var originalTask = await _taskRepository.GetById(task.Id.Value);
             task.CreatedBy = originalTask.CreatedBy;
+            task.CreatedAt = originalTask.CreatedAt;
+            if (originalTask.DueDate != task.DueDate)
+            {
+                task.ReminderSent = false;
+            }
+            task.UpdatedAt = DateTime.Now;
             int rowsAffected = await _taskRepository.Update(task);
             if (rowsAffected > 0)
             {
-                return Ok(task);
+                var response = new TaskResponse
+                {
+                    Id = task.Id,
+                    Title = task.Title,
+                    Description = task.Description,
+                    Done = task.Done,
+                    PriorityId = task.PriorityId,
+                    DueDate = task.DueDate,
+                    CreatedBy = task.CreatedBy,
+                    CreatedByUsername = (await _userManager.FindByIdAsync(task.CreatedBy)).UserName,
+                    AssignedTo = task.AssignedTo,
+                    AssignedToUsername = (await _userManager.FindByIdAsync(task.AssignedTo)).UserName,
+                    Reminder = task.Reminder
+                };
+                return Ok(response);
             }
 
             return StatusCode(500);

@@ -13,9 +13,9 @@
           
           <ng-template #eventDescription>{{ event.title }}</ng-template>
         </span>
-        <span *ngIf="event.createdByUsername != username"> Event held by: {{task.createdByUsername}}</span>
+        <span *ngIf="event.createdByUsername != username"> (Event held by: {{event.createdByUsername}})</span>
         
-        <span class="event-edit">
+        <span *ngIf="event.createdByUsername == username" class="event-edit">
           <span (click)="openAddEventModal(event)">
             <mat-icon class="event-icon">create</mat-icon>
           </span>

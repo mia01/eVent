@@ -20,7 +20,7 @@ namespace eventapp.Domain.Jobs
             "Hi {0}! {1} would like to remind you that you have an task which is due in one hour.";
 
         private const string EventTemplate =
-            "Hi {0}! {1}'s event \"{2}\" is starting in one hour!";
+            "Hi {0}! {1}'s event ({2}) is starting in one hour!";
 
         private readonly UserManager<EventAppUser> _userManager;
         private readonly EventappTwilioClient _twilioCLient;
@@ -51,25 +51,30 @@ namespace eventapp.Domain.Jobs
 
         private async Task SendEventReminders(DateTime oneHourMinRange, DateTime oneHourMaxRange)
         {
-            var events = await _eventRepository.GetEventsStartingToday();
+            var events = (await _eventRepository.GetEventsStartingToday())
+                .Where(e => e.Reminder && e.ReminderSent != true && e.StartDate < oneHourMaxRange && e.StartDate > oneHourMinRange);
 
-            foreach (var eventRecords in events) {
+            foreach (var eventRecord in events) {
                 // get  of the event
-                var eventOwner = await _userManager.FindByIdAsync(eventRecords.CreatedBy);
+                var eventOwner = await _userManager.FindByIdAsync(eventRecord.CreatedBy);
                 
                 // get his/her
-                var friends = await _friendService.GetUserFriends(eventRecords.CreatedBy);
+                var friends = await _friendService.GetUserFriends(eventRecord.CreatedBy);
                 
                 // send reminder
                 foreach (var friend in friends)
                 {
                     var friendUser = await _userManager.FindByIdAsync(friend.FriendId);
-                    var message = string.Format(EventTemplate, friendUser.UserName, eventOwner.UserName);
+                    var message = string.Format(EventTemplate, friendUser.UserName, eventOwner.UserName, eventRecord.Title);
                     _twilioCLient.SendSmsMessage(
                     friendUser.PhoneNumber,
                     message
                     );
                 }
+
+                eventRecord.ReminderSent = true;
+                await _eventRepository.Update(eventRecord);
+
             }
         }
 

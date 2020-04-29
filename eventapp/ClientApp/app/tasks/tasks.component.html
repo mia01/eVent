@@ -18,11 +18,11 @@
           
           <ng-template #taskDescription>{{ task.title }}</ng-template>
 
-          <span *ngIf="task.createdByUsername != username"> Assigned to you by: {{task.createdByUsername}}</span>
-          <span *ngIf="task.assignedToUsername != username"> You assigned this task to: {{task.assignedToUsername}}</span>
+          <span *ngIf="task.createdByUsername != username"> (Assigned to you by: {{task.createdByUsername}})</span>
+          <span *ngIf="task.assignedToUsername != username"> (You assigned this task to: {{task.assignedToUsername}})</span>
         </span>
         
-        <span class="task-edit">
+        <span *ngIf="task.createdByUsername == username" class="task-edit">
           <span (click)="openAddTaskModal(task)">
             <mat-icon class="task-icon">create</mat-icon>
           </span>

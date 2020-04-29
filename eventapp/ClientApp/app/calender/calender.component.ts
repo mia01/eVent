@@ -3,18 +3,27 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import { TasksService } from '../services/tasks.service';
 import { EventType } from '../models/enums/EventTypes.enum';
 import Task from '../models/task';
+import Event from '../models/event';
 import { EventService } from '../services/event.service';
+import { AuthorizeService } from '../services/auth/authorize.service';
 @Component({
   selector: 'app-calender',
   templateUrl: './calender.component.html',
   styleUrls: ['./calender.component.scss']
 })
 export class CalenderComponent implements OnInit {
+  username: string;
   calendarPlugins = [dayGridPlugin];
   public eventSources: Array<any> = [];
-  constructor(private taskService: TasksService, private eventService: EventService) { }
+  constructor(
+    private authservice: AuthorizeService,
+    private taskService: TasksService, 
+    private eventService: EventService) { }
 
   ngOnInit(): void {
+    this.authservice.getUser().subscribe(u => {
+      this.username = u.name;
+    });
     this.eventSources = [
       this.fetchTasks.bind(this),
       this.fetchEvents.bind(this)
@@ -56,9 +65,14 @@ export class CalenderComponent implements OnInit {
       } else if (task.priorityId == 3) {
         info.el.classList.add("low-priority");
       }
+    } else if (info.event.extendedProps.type == EventType.Event) {
+      let event = info.event.extendedProps.event as Event;
+      if (event.createdByUsername != this.username) {
+        let element = info.el.querySelector('.fc-content');
+        var eventOwner = document.createElement('span');
+        eventOwner.innerHTML = '(' +event.createdByUsername + ')';
+        element.prepend(eventOwner);
+      }
     };
-
-    console.log("rendering");
-    console.log(info);
   }
 }

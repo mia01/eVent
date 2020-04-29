@@ -25,6 +25,17 @@ namespace eventapp.Domain.Repositories
                 return result.AsList();
             }
         }
+        
+        public async Task<List<Event>> GetByUserIds(List<string> userIds)
+        {
+            using (var dbConnection = Connection)
+            {
+                string sQuery = $"SELECT * FROM {Table} WHERE CreatedBy IN @UserIds AND PublicEvent = 1";
+                dbConnection.Open();
+                var result = await dbConnection.QueryAsync<Event>(sQuery, new { UserIds = userIds });
+                return result.AsList();
+            }
+        }
 
         public async Task<List<Event>> GetEventsStartingToday()
         {
