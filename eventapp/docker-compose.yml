@@ -1,12 +1,5 @@
 ﻿version: '3'
 services:
-  web:
-    container_name: eventapp_web
-    build:
-      context: ./
-      dockerfile: ./docker/web/dockerfile
-    ports:
-     - "5001:5000"
   mysql:
     container_name: eventapp_mysql
     build: 

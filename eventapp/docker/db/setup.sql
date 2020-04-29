@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `eventapp`.`__EFMigrationsHistory` (
     PRIMARY KEY (`MigrationId`)
 );
 
-CREATE TABLE IF NOT EXISTS `AspNetRoles` (
+CREATE TABLE IF NOT EXISTS `eventapp`.`AspNetRoles` (
   `Id` varchar(85) CHARACTER SET utf8mb4 NOT NULL,
   `Name` varchar(256) CHARACTER SET utf8mb4  DEFAULT NULL,
   `NormalizedName` varchar(85) CHARACTER SET utf8mb4  DEFAULT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `AspNetRoles` (
   UNIQUE KEY `RoleNameIndex` (`NormalizedName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
-CREATE TABLE IF NOT EXISTS  `AspNetRoleClaims` (
+CREATE TABLE IF NOT EXISTS  `eventapp`.`AspNetRoleClaims` (
   `Id` int NOT NULL AUTO_INCREMENT,
   `RoleId` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
   `ClaimType` longtext CHARACTER SET utf8mb4 ,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS  `AspNetRoleClaims` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 
-CREATE TABLE IF NOT EXISTS `AspNetUsers` (
+CREATE TABLE IF NOT EXISTS `eventapp`.`AspNetUsers` (
   `Id` varchar(255) CHARACTER SET utf8mb4  NOT NULL,
   `UserName` varchar(256) CHARACTER SET utf8mb4  DEFAULT NULL,
   `NormalizedUserName` varchar(256) CHARACTER SET utf8mb4  DEFAULT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `AspNetUsers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
 
-CREATE TABLE IF NOT EXISTS `AspNetUserTokens` (
+CREATE TABLE IF NOT EXISTS `eventapp`.`AspNetUserTokens` (
   `UserId` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
   `LoginProvider` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
   `Name` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `AspNetUserTokens` (
   CONSTRAINT `FK_AspNetUserTokens_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
-CREATE TABLE  IF NOT EXISTS `AspNetUserRoles` (
+CREATE TABLE  IF NOT EXISTS `eventapp`.`AspNetUserRoles` (
   `UserId` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
   `RoleId` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
   PRIMARY KEY (`UserId`,`RoleId`),
@@ -71,7 +71,7 @@ CREATE TABLE  IF NOT EXISTS `AspNetUserRoles` (
   CONSTRAINT `FK_AspNetUserRoles_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
-CREATE TABLE  IF NOT EXISTS `AspNetUserLogins` (
+CREATE TABLE  IF NOT EXISTS `eventapp`.`AspNetUserLogins` (
   `LoginProvider` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
   `ProviderKey` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
   `ProviderDisplayName` longtext CHARACTER SET utf8mb4 ,
@@ -81,7 +81,7 @@ CREATE TABLE  IF NOT EXISTS `AspNetUserLogins` (
   CONSTRAINT `FK_AspNetUserLogins_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
-CREATE TABLE  IF NOT EXISTS `AspNetUserClaims` (
+CREATE TABLE  IF NOT EXISTS `eventapp`.`AspNetUserClaims` (
   `Id` int NOT NULL AUTO_INCREMENT,
   `UserId` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
   `ClaimType` longtext CHARACTER SET utf8mb4 ,
@@ -91,7 +91,7 @@ CREATE TABLE  IF NOT EXISTS `AspNetUserClaims` (
   CONSTRAINT `FK_AspNetUserClaims_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
-CREATE TABLE IF NOT EXISTS  `PersistedGrants` (
+CREATE TABLE IF NOT EXISTS  `eventapp`.`PersistedGrants` (
   `Key` varchar(200) CHARACTER SET utf8mb4  NOT NULL,
   `Type` varchar(50) CHARACTER SET utf8mb4  NOT NULL,
   `SubjectId` varchar(200) CHARACTER SET utf8mb4  DEFAULT NULL,
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS  `PersistedGrants` (
   KEY `IX_PersistedGrants_SubjectId_ClientId_Type` (`SubjectId`,`ClientId`,`Type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
-CREATE TABLE  IF NOT EXISTS  `IdentityUser` (
+CREATE TABLE  IF NOT EXISTS  `eventapp`.`IdentityUser` (
   `Id` varchar(85) CHARACTER SET utf8mb4  NOT NULL,
   `UserName` longtext CHARACTER SET utf8mb4 ,
   `NormalizedUserName` varchar(85) CHARACTER SET utf8mb4  DEFAULT NULL,
@@ -123,7 +123,7 @@ CREATE TABLE  IF NOT EXISTS  `IdentityUser` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE IF NOT EXISTS `DeviceCodes` (
+CREATE TABLE IF NOT EXISTS `eventapp`.`DeviceCodes` (
   `UserCode` varchar(200) CHARACTER SET utf8mb4  NOT NULL,
   `DeviceCode` varchar(200) CHARACTER SET utf8mb4  NOT NULL,
   `SubjectId` varchar(200) CHARACTER SET utf8mb4  DEFAULT NULL,
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `eventapp`.`Tasks` (
   PRIMARY KEY (`Id`))
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS UserFriend (
+CREATE TABLE IF NOT EXISTS `eventapp`.`UserFriend` (
 `Id` INT NOT NULL AUTO_INCREMENT,
 `UserId` VARCHAR(255) NOT NULL,
 `UserFriendId` VARCHAR(255) NOT NULL,
@@ -193,7 +193,5 @@ CREATE TABLE IF NOT EXISTS `eventapp`.`Events` (
   `Reminder` TINYINT NOT NULL,
   `PublicEvent` TINYINT NOT NULL,
   `ReminderSent` TINYINT NOT NULL DEFAULT 0,
-  FOREIGN KEY (PriorityId)
-  REFERENCES Priority(Id),
   PRIMARY KEY (`Id`))
 ENGINE = InnoDB;
