@@ -12,6 +12,8 @@ The app allows you to do the following:
 - Send out invites or reminders to friends about your events 
 - See your tasks and events as well as your friend events on a calender
 
+**See this in action [here](https://eventapplication.azurewebsites.net/authentication/login)**
+
 ## Setup Prerequisite 
 
 - [Visual Studio 2017 +]
