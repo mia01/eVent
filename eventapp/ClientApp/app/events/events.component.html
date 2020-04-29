@@ -3,6 +3,7 @@
 </div>
 <div class="events-container">
   <div>
+    <div *ngIf="!events.length">You have no events. Click add to create some now!</div>
     <div role="listitem" class="event-list-item" *ngFor="let event of events">
       <div class="event-item">
         

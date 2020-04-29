@@ -14,13 +14,13 @@ namespace eventapp.Domain.Jobs
     public class ReminderNotificationJob
     {
         private const string DefaultMessageTemplate =
-            "Hi {0}! Just a reminder that you have an task which is due in one hour.";
+            "Hi {0}! Just a reminder that you have an task which is due in one hour. \n From eVent";
 
         private const string MessageTemplate =
-            "Hi {0}! {1} would like to remind you that you have an task which is due in one hour.";
+            "Hi {0}! {1} would like to remind you that you have an task which is due in one hour. \nFrom eVent";
 
         private const string EventTemplate =
-            "Hi {0}! {1}'s event ({2}) is starting in one hour!";
+            "Hi {0}! {1}'s event ({2}) is starting in one hour! \n From eVent";
 
         private readonly UserManager<EventAppUser> _userManager;
         private readonly EventappTwilioClient _twilioCLient;

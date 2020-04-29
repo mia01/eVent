@@ -3,6 +3,7 @@
 </div>
 <div class="tasks-container">
   <div>
+    <div *ngIf="!tasks.length">You have no tasks. Click add to create some now!</div>
     <div role="listitem" class="task-list-item" *ngFor="let task of tasks">
       <div [class.done]="task.done" class="task-item"
         [ngClass]="{ 'low-priority': (task.priorityId == 1), 'medium-priority': (task.priorityId == 2), 'high-priority': (task.priorityId == 3) }">
