@@ -35,4 +35,4 @@ Verify that you are running at least Node.js version 8.x or greater and npm vers
 
 ## License
 
-[Apache License v2] (http://www.apache.org/licenses/)
+[Apache License v2](http://www.apache.org/licenses/)
