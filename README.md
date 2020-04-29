@@ -27,13 +27,14 @@ Verify that you are running at least Node.js version 8.x or greater and npm vers
 ## Getting Started
 
 1. Right click on solution and select `Restore Nuget Packages`
-2. Open terminal window and go to project location where the `package.json` file is, then run the following to install all the npm packages: "npm install"
-3. Run `docker-compose up -d` (make sure you are in the directory which contains the docker-compose.yml file `cd eventapp`)
-4. Check that your docker MySql container is up and running by connecting to it on `127.0.0.1:3306` via a client (e.g. Mysql workbench). To connect use the username `root` and password `letmein`. 
-5. Run `docker exec -it eventapp_mysql bin/bash`to log into the mysql container. Then run `./setup.sh` to setup the DB. Or you can use the script in `docker/db/setup.sql` to run it through a client. You should see the eventapp database has been created with some tables when that has finished.
-5. Run npm start and make sure the angular app has built and is running ok
-6. Run the .net core application on visual studio
-7. Go to https://localhost:44363 to start using the app!
+2. Update the appsettings.Development.json file `Twilio` section with your twilio credentials.
+3. Open terminal window and go to project location where the `package.json` file is, then run the following to install all the npm packages: "npm install"
+4. Run `docker-compose up -d` (make sure you are in the directory which contains the docker-compose.yml file `cd eventapp`)
+5. Check that your docker MySql container is up and running by connecting to it on `127.0.0.1:3306` via a client (e.g. Mysql workbench). To connect use the username `root` and password `letmein`. 
+6. Run `docker exec -it eventapp_mysql bin/bash`to log into the mysql container. Then run `./setup.sh` to setup the DB. Or you can use the script in `docker/db/setup.sql` to run it through a client. You should see the eventapp database has been created with some tables when that has finished.
+7. Run npm start and make sure the angular app has built and is running ok
+8. Run the .net core application on visual studio
+9. Go to https://localhost:44363 to start using the app!
 
 ## License
 
