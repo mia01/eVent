@@ -8,7 +8,7 @@ import { AuthGuard } from './services/auth/authGuard.service';
 import { ApplicationPaths } from './models/auth/auth.constants';
 import { LogoutComponent } from './logout/logout.component';
 import { FriendsComponent } from './friends/friends.component';
-import { EventsComponent } from './tasks copy/events.component';
+import { EventsComponent } from './events/events.component';
 
 
 const appRoutes: Routes = [

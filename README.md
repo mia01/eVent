@@ -22,7 +22,7 @@ Verify that you are running at least Node.js version 8.x or greater and npm vers
 
 1. Right click on solution and select `Restore Nuget Packages`
 2. Open terminal window and go to project location where the `package.json` file is, then run the following to install all the npm packages: "npm install"
-3. Run `docker-compose up -d` (make sure you are in the directory which contains the docker-compose.yml file)
+3. Run `docker-compose up -d` (make sure you are in the directory which contains the docker-compose.yml file `cd eventapp`)
 4. Check that your docker MySql container is up and running by connecting to it on `127.0.0.1:3306` via a client (e.g. Mysql workbench). To connect use the username `root` and password `letmein`. 
 5. Run `docker exec -it eventapp_mysql bin/bash`to log into the mysql container. Then run `./setup.sh` to setup the DB. Or you can use the script in `docker/db/setup.sql` to run it through a client. You should see the eventapp database has been created with some tables when that has finished.
 5. Run npm start and make sure the angular app has built and is running ok
