@@ -59,11 +59,11 @@ export class CalenderComponent implements OnInit {
       element.prepend(i);
 
       if (task.priorityId == 1) {
-        info.el.classList.add("medium-priority");
-      } else if (task.priorityId == 2) {
-        info.el.classList.add("high-priority");
-      } else if (task.priorityId == 3) {
         info.el.classList.add("low-priority");
+      } else if (task.priorityId == 2) {
+        info.el.classList.add("medium-priority");
+      } else if (task.priorityId == 3) {
+        info.el.classList.add("high-priority");
       }
     } else if (info.event.extendedProps.type == EventType.Event) {
       let event = info.event.extendedProps.event as Event;

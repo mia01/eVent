@@ -20,7 +20,7 @@ namespace eventapp.Domain.Jobs
             "Hi {0}! {1} would like to remind you that you have an task which is due in one hour. \nFrom eVent";
 
         private const string EventTemplate =
-            "Hi {0}! {1}'s event ({2}) is starting in one hour! \n From eVent";
+            "Hi {0}! {1}'s event ({2}) is starting in one hour. Don't miss it! \n From eVent";
 
         private readonly UserManager<EventAppUser> _userManager;
         private readonly EventappTwilioClient _twilioCLient;

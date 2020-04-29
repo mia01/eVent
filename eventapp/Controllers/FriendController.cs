@@ -92,8 +92,8 @@ namespace eventapp.Controllers
                 var userFriendDetails = userFriends.Select(async f => new UserFriendResponse
                 {
                     Id = f.Id,
-                    FriendId = f.UserFriendId,
-                    FriendUsername = (await _userManager.FindByIdAsync(f.UserFriendId)).UserName,
+                    FriendId = f.UserId,
+                    FriendUsername = (await _userManager.FindByIdAsync(f.UserId)).UserName,
                     Accepted = f.Accepted
                 });
                 return await System.Threading.Tasks.Task.WhenAll(userFriendDetails);
@@ -141,7 +141,14 @@ namespace eventapp.Controllers
                 var updatedRequest = await _userFriendRepository.Update(userFriendrequest);
                 if (updatedRequest > 0)
                 {
-                    return Ok(userFriendrequest);
+                    var response = new UserFriendResponse
+                    {
+                        Id = userFriendrequest.Id,
+                        FriendId = userFriendrequest.UserId,
+                        FriendUsername = (await _userManager.FindByIdAsync(userFriendrequest.UserId)).UserName,
+                        Accepted = userFriendrequest.Accepted
+                    };
+                    return Ok(response);
                 }
                 return StatusCode(500);
             }
