@@ -1,12 +1,16 @@
 # EventApp
+An event and task management app for family and friends. Imagine if you could assign tasks to your kids or siblings and send them text reminders. Create events and let your loved ones know about them!
+
 This is a small task and event management app which I am submitting to the [Dev.to Hackathon](https://dev.to/devteam/announcing-the-twilio-hackathon-on-dev-2lh8).
-The app aloows you to do the following:
+
+The app allows you to do the following:
 - register new users
 - verify user phone number using Twillio Api
 - create tasks and events for the user
-- A user send add and except friend invites
-- send text reminders to the task assignee when a task is due and user friends about an upcoming event
-- show user tasks and events on a calender
+- A user can send and accept friend invites
+- Send text reminders to the task assignee when a task is due.
+- Send out invites or reminders to friends about your events 
+- See your tasks and events as well as your friend events on a calender
 
 ## Setup Prerequisite 
 
